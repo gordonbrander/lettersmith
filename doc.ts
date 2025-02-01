@@ -3,11 +3,13 @@ import type { Json } from "./json.ts";
 import { isNone, type Option } from "./option.ts";
 import { performAsync, Result } from "./result.ts";
 import { join as joinPath } from "@std/path";
-import { truncate } from "./text.ts";
+import { truncate280 } from "./text.ts";
 import { getAutoTemplateForPath, Path, replaceExtension } from "./path.ts";
 import { parseTimestamp, type Timestamp } from "./date.ts";
 import { isSome } from "./option.ts";
 import { isString } from "./check.ts";
+import { stripTags } from "./html.ts";
+import { pipe } from "./pipe.ts";
 
 export type Meta = Record<string, Json>;
 
@@ -105,7 +107,7 @@ export const setSummaryIfEmpty = (doc: Doc, summary: string): Doc => {
 
 /** Generate a summary by truncating the content, doc if it doesn't already have a summary. */
 export const autoSummary = (doc: Doc): Doc =>
-  setSummaryIfEmpty(doc, truncate(doc.content, 280));
+  setSummaryIfEmpty(doc, pipe(doc.content, stripTags, truncate280));
 
 /** Set the template for doc, based on id */
 export const autoTemplate = (

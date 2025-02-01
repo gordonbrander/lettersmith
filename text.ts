@@ -19,3 +19,5 @@ export const truncate = (
   const truncated = words.slice(0, -1).join(" ");
   return truncated + suffix;
 };
+
+export const truncate280 = (text: string): string => truncate(text, 280);
