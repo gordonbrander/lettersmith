@@ -14,7 +14,7 @@ export const getAutoTemplateForPath = (
 };
 
 /** Replace file extension. Assumes 'extname' function from deps. */
-export const replaceExtension = (
+export const setExtension = (
   path: Path,
   extension: string,
 ): Path => {

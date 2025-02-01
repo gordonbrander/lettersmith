@@ -4,7 +4,11 @@ import { isNone, type Option } from "./option.ts";
 import { performAsync, Result } from "./result.ts";
 import { join as joinPath } from "@std/path";
 import { truncate280 } from "./text.ts";
-import { getAutoTemplateForPath, Path, replaceExtension } from "./path.ts";
+import {
+  getAutoTemplateForPath,
+  Path,
+  setExtension as setPathExtension,
+} from "./path.ts";
 import { parseTimestamp, type Timestamp } from "./date.ts";
 import { isSome } from "./option.ts";
 import { isString } from "./check.ts";
@@ -127,7 +131,7 @@ export const setExtension = (
 ): Doc =>
   create({
     ...doc,
-    outputPath: replaceExtension(doc.outputPath, ext),
+    outputPath: setPathExtension(doc.outputPath, ext),
   });
 
 /** Uplift metadata, looking for blessed fields and assigning values to doc:

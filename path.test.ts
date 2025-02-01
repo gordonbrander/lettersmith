@@ -1,9 +1,5 @@
 import { assertEquals } from "@std/assert";
-import {
-  getAutoTemplateForPath,
-  isIndexPath,
-  replaceExtension,
-} from "./path.ts";
+import { getAutoTemplateForPath, isIndexPath, setExtension } from "./path.ts";
 
 // Test getting automatic template for root-level file
 Deno.test("getAutoTemplateForPath - Root file", () => {
@@ -27,23 +23,23 @@ Deno.test("getAutoTemplateForPath - Deep nested", () => {
 });
 
 // Test replacing extension
-Deno.test("replaceExtension - Basic replace", () => {
+Deno.test("setExtension - Basic replace", () => {
   const path = "test.md";
-  const result = replaceExtension(path, ".html");
+  const result = setExtension(path, ".html");
   assertEquals(result, "test.html");
 });
 
 // Test replacing when no extension exists
-Deno.test("replaceExtension - No extension", () => {
+Deno.test("setExtension - No extension", () => {
   const path = "test";
-  const result = replaceExtension(path, ".html");
+  const result = setExtension(path, ".html");
   assertEquals(result, "test.html");
 });
 
 // Test replacing extension in nested path
-Deno.test("replaceExtension - Nested path", () => {
+Deno.test("setExtension - Nested path", () => {
   const path = "blog/post.md";
-  const result = replaceExtension(path, ".html");
+  const result = setExtension(path, ".html");
   assertEquals(result, "blog/post.html");
 });
 
