@@ -7,6 +7,7 @@
     "@std/assert": "jsr:@std/assert@1",
     "@std/path": "jsr:@std/path@^1.0.8",
     "@std/yaml": "jsr:@std/yaml@^1.0.5",
+    "commonmark": "npm:commonmark@^0.31.2",
     "liquidjs": "npm:liquidjs@^10.20.2"
   }
 }
