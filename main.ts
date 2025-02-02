@@ -1,5 +1,11 @@
 export * as doc from "./doc.ts";
+export * as docs from "./docs.ts";
 export * as option from "./option.ts";
 export * as result from "./result.ts";
 export * as io from "./io.ts";
-export * as pipe from "./pipe.ts";
+export { pipe, pipeAsync } from "./pipe.ts";
+export * as generator from "./generator.ts";
+export * as markdown from "./markdown.ts";
+export * as liquid from "./liquid.ts";
+export * as html from "./html.ts";
+export * as permalink from "./permalink.ts";
