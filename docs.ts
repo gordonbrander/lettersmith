@@ -47,31 +47,38 @@ export const build =
   };
 
 /** Remove docs with given ID */
-export const removeWithId = (id: Path) => (docs: AwaitableIterable<Doc>) =>
-  filterAsync(docs, (d) => d.id !== id);
+export const removeWithId =
+  (id: Path) => (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
+    filterAsync(docs, (d) => d.id !== id);
 
 /** Remove drafts */
-export const removeDrafts = (docs: AwaitableIterable<Doc>) =>
-  filterAsync(docs, (d) => d.meta.draft === false);
+export const removeDrafts = (
+  docs: AwaitableIterable<Doc>,
+): AsyncGenerator<Doc> => filterAsync(docs, (d) => d.meta.draft === false);
 
 /** Remove index files */
-export const removeIndex = (docs: AwaitableIterable<Doc>) =>
-  filterAsync(docs, (d) => !isIndexPath(d.outputPath));
+export const removeIndex = (
+  docs: AwaitableIterable<Doc>,
+): AsyncGenerator<Doc> => filterAsync(docs, (d) => !isIndexPath(d.outputPath));
 
-export const dedupeById = (docs: AwaitableIterable<Doc>) =>
+export const dedupeById = (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
   dedupeAsync(docs, (d) => d.id);
 
-export const autoSummary = (docs: AwaitableIterable<Doc>) =>
-  mapAsync(docs, doc.autoSummary);
+export const autoSummary = (
+  docs: AwaitableIterable<Doc>,
+): AsyncGenerator<Doc> => mapAsync(docs, doc.autoSummary);
 
-export const autoTemplate = (docs: AwaitableIterable<Doc>) =>
-  mapAsync(docs, doc.autoTemplate);
+export const autoTemplate = (
+  docs: AwaitableIterable<Doc>,
+): AsyncGenerator<Doc> => mapAsync(docs, doc.autoTemplate);
 
-export const setExtension = (ext: string) => (docs: AwaitableIterable<Doc>) =>
-  mapAsync(docs, (d) => doc.setExtension(d, ext));
+export const setExtension =
+  (ext: string) => (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
+    mapAsync(docs, (d) => doc.setExtension(d, ext));
 
-export const parseFrontmatter = (docs: AwaitableIterable<Doc>) =>
-  mapAsync(docs, doc.parseFrontmatter);
+export const parseFrontmatter = (
+  docs: AwaitableIterable<Doc>,
+): AsyncGenerator<Result<Doc, Error>> => mapAsync(docs, doc.parseFrontmatter);
 
-export const upliftMeta = (docs: AwaitableIterable<Doc>) =>
-  mapAsync(docs, doc.parseFrontmatter);
+export const upliftMeta = (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
+  mapAsync(docs, doc.upliftMeta);
