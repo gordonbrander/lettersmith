@@ -1,16 +1,15 @@
 import * as doc from "./doc.ts";
 import { type Doc } from "./doc.ts";
-import { pipe } from "./pipe.ts";
-import { globPaths, isIndexPath, type Path } from "./path.ts";
+import { pipe } from "./utils/pipe.ts";
+import { globPaths, isIndexPath, type Path } from "./utils/path.ts";
 import {
   type AwaitableIterable,
   dedupeAsync,
   filterAsync,
   filterMapAsync,
   mapAsync,
-} from "./generator.ts";
-import type { Result } from "./result.ts";
-import { isErr } from "./result.ts";
+} from "./utils/generator.ts";
+import { isErr, type Result } from "./utils/result.ts";
 
 export const read = (
   paths: AwaitableIterable<string>,

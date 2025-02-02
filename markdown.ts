@@ -1,7 +1,7 @@
 import { HtmlRenderer, Parser } from "commonmark";
-import { type AwaitableIterable, mapAsync } from "./generator.ts";
+import { type AwaitableIterable, mapAsync } from "./utils/generator.ts";
 import { create as createDoc, type Doc } from "./doc.ts";
-import { setExtension } from "./path.ts";
+import { setExtension } from "./utils/path.ts";
 
 export const renderMarkdown = (markdown: string): string => {
   const parser = new Parser();

@@ -1,19 +1,24 @@
-import { writeFileDeep } from "./io.ts";
-import { isNone, type Option } from "./option.ts";
-import { isOk, map as mapResult, performAsync, Result } from "./result.ts";
+import { writeFileDeep } from "./utils/io.ts";
+import { isNone, type Option } from "./utils/option.ts";
+import {
+  isOk,
+  map as mapResult,
+  performAsync,
+  Result,
+} from "./utils/result.ts";
 import { join as joinPath } from "@std/path";
-import { truncate280 } from "./text.ts";
+import { truncate280 } from "./utils/text.ts";
 import {
   getAutoTemplateForPath,
   Path,
   setExtension as setPathExtension,
-} from "./path.ts";
-import { parseTimestamp, type Timestamp } from "./date.ts";
+} from "./utils/path.ts";
+import { parseTimestamp, type Timestamp } from "./utils/date.ts";
 import { parseFrontmatter as parseFrontmatterInText } from "./frontmatter.ts";
-import { isSome } from "./option.ts";
-import { isString } from "./check.ts";
-import { stripTags } from "./html.ts";
-import { pipe } from "./pipe.ts";
+import { isSome } from "./utils/option.ts";
+import { isString } from "./utils/check.ts";
+import { stripTags } from "./utils/html.ts";
+import { pipe } from "./utils/pipe.ts";
 
 export type Meta = Record<string, unknown>;
 

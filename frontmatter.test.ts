@@ -1,6 +1,6 @@
 import { assert, assertEquals } from "@std/assert";
 import { parseFrontmatter } from "./frontmatter.ts";
-import { isErr, isOk } from "./result.ts";
+import { isErr, isOk } from "./utils/result.ts";
 
 Deno.test("parseFrontmatter returns error for empty frontmatter", () => {
   const content = "---\n---\nHello world";

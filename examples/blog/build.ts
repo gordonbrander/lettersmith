@@ -1,15 +1,30 @@
-import * as lettersmith from "../../main.ts";
-import { pipe } from "../../main.ts";
+import * as docs from "../../docs.ts";
+import * as markdown from "../../markdown.ts";
+import * as io from "../../io.ts";
+import * as liquid from "../../liquid.ts";
+import { pipe } from "../../pipe.ts";
 
-const x = lettersmith.docs.readMatching("pages/*.md");
-console.log(await Array.fromAsync(x));
+await io.removeRecursive("public");
 
-const finished = pipe(
+await pipe(
   "./pages/*.md",
-  lettersmith.docs.readMatching,
-  lettersmith.docs.dumpErr,
-  lettersmith.docs.build("public"),
+  docs.readMatching,
+  docs.dumpErr,
+  docs.parseFrontmatter,
+  docs.dumpErr,
+  docs.upliftMeta,
+  markdown.renderMarkdownDocs,
+  docs.autoSummary,
+  docs.autoTemplate,
+  liquid.renderLiquidDocs({
+    root: "templates",
+    context: {
+      site: {
+        title: "My Site",
+      },
+    },
+  }),
+  docs.build("public"),
 );
 
-await finished;
 console.log("Done!");
