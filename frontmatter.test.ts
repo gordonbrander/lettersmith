@@ -1,14 +1,26 @@
 import { assert, assertEquals } from "@std/assert";
 import { parseFrontmatter } from "./frontmatter.ts";
-import { isOk } from "./result.ts";
+import { isErr, isOk } from "./result.ts";
 
-Deno.test("parseFrontmatter returns empty object for empty frontmatter", () => {
+Deno.test("parseFrontmatter returns error for empty frontmatter", () => {
   const content = "---\n---\nHello world";
   const result = parseFrontmatter(content);
 
-  assert(isOk(result));
-  assertEquals(result.ok.frontmatter, null);
-  assertEquals(result.ok.content, "Hello world");
+  assert(isErr(result));
+});
+
+Deno.test("parseFrontmatter returns error for frontmatter that does not have an record at the top level", () => {
+  const content = "---\nnull---\nHello world";
+  const result = parseFrontmatter(content);
+
+  assert(isErr(result));
+});
+
+Deno.test("parseFrontmatter returns error for frontmatter that does not have an record at the top level (2)", () => {
+  const content = "---\n[1, 2, 3]---\nHello world";
+  const result = parseFrontmatter(content);
+
+  assert(isErr(result));
 });
 
 Deno.test("parseFrontmatter returns empty object for no frontmatter", () => {
@@ -40,6 +52,7 @@ Content here`;
 
 Deno.test("parseFrontmatter handles frontmatter in documents that end immediately after the block close", () => {
   const content = `---
+title: "Hello"
 ---`;
 
   const result = parseFrontmatter(content);

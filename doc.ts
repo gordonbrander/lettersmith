@@ -1,5 +1,4 @@
 import { writeFileDeep } from "./io.ts";
-import type { Json } from "./json.ts";
 import { isNone, type Option } from "./option.ts";
 import { performAsync, Result } from "./result.ts";
 import { join as joinPath } from "@std/path";
@@ -15,7 +14,7 @@ import { isString } from "./check.ts";
 import { stripTags } from "./html.ts";
 import { pipe } from "./pipe.ts";
 
-export type Meta = Record<string, Json>;
+export type Meta = Record<string, unknown>;
 
 export type Doc = {
   id: Path;
