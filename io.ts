@@ -1,8 +1,9 @@
 import { dirname } from "@std/path";
 import { performAsync, Result } from "./result.ts";
+import type { Path } from "./path.ts";
 
 const mkdir = async (
-  path: string | URL,
+  path: Path | URL,
   options: Deno.MkdirOptions,
 ): Promise<Result<null, Error>> => {
   return await performAsync<null, Error>(async () => {
@@ -13,7 +14,7 @@ const mkdir = async (
 
 /** Write a file to path, creating intermediate directories as needed */
 export const writeFileDeep = async (
-  path: string,
+  path: Path,
   data: Uint8Array | string,
 ): Promise<Result<null, Error>> => {
   const dir = dirname(path);
@@ -28,3 +29,11 @@ export const writeFileDeep = async (
     return null;
   });
 };
+
+export const removeRecursive = (
+  path: Path,
+): Promise<Result<void, Error>> =>
+  performAsync(async () => {
+    await Deno.remove(path, { recursive: true });
+    return;
+  });
