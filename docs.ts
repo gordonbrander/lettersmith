@@ -1,5 +1,5 @@
 import * as doc from "./doc.ts";
-import { type Doc, logWriteResult, write as writeDoc } from "./doc.ts";
+import { type Doc } from "./doc.ts";
 import { pipe } from "./pipe.ts";
 import { globPaths, isIndexPath, type Path } from "./path.ts";
 import {
@@ -40,23 +40,38 @@ export const dumpErr = (
  */
 export const build =
   (dir: Path) => async (docs: AwaitableIterable<Doc>): Promise<void> => {
-    for await (const doc of docs) {
-      logWriteResult(await writeDoc(doc, dir));
+    for await (const d of docs) {
+      doc.logWriteResult(await doc.write(d, dir));
     }
     return;
   };
 
 /** Remove docs with given ID */
 export const removeWithId = (id: Path) => (docs: AwaitableIterable<Doc>) =>
-  filterAsync(docs, (doc) => doc.id !== id);
+  filterAsync(docs, (d) => d.id !== id);
 
 /** Remove drafts */
 export const removeDrafts = (docs: AwaitableIterable<Doc>) =>
-  filterAsync(docs, (doc) => doc.meta.draft === false);
+  filterAsync(docs, (d) => d.meta.draft === false);
 
 /** Remove index files */
 export const removeIndex = (docs: AwaitableIterable<Doc>) =>
-  filterAsync(docs, (doc) => !isIndexPath(doc.outputPath));
+  filterAsync(docs, (d) => !isIndexPath(d.outputPath));
 
 export const dedupeById = (docs: AwaitableIterable<Doc>) =>
-  dedupeAsync(docs, (doc) => doc.id);
+  dedupeAsync(docs, (d) => d.id);
+
+export const autoSummary = (docs: AwaitableIterable<Doc>) =>
+  mapAsync(docs, doc.autoSummary);
+
+export const autoTemplate = (docs: AwaitableIterable<Doc>) =>
+  mapAsync(docs, doc.autoTemplate);
+
+export const setExtension = (ext: string) => (docs: AwaitableIterable<Doc>) =>
+  mapAsync(docs, (d) => doc.setExtension(d, ext));
+
+export const parseFrontmatter = (docs: AwaitableIterable<Doc>) =>
+  mapAsync(docs, doc.parseFrontmatter);
+
+export const upliftMeta = (docs: AwaitableIterable<Doc>) =>
+  mapAsync(docs, doc.parseFrontmatter);

@@ -1,6 +1,6 @@
 import { writeFileDeep } from "./io.ts";
 import { isNone, type Option } from "./option.ts";
-import { isOk, map as mapResult, ok, performAsync, Result } from "./result.ts";
+import { isOk, map as mapResult, performAsync, Result } from "./result.ts";
 import { join as joinPath } from "@std/path";
 import { truncate280 } from "./text.ts";
 import {
