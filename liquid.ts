@@ -22,6 +22,7 @@ export const renderLiquidDoc = async (
   doc: Doc,
   context: Context,
 ): Promise<Doc> => {
+  // Don't render if the doc doesn't have a template.
   if (isNone(doc.templatePath)) {
     return doc;
   }
@@ -34,8 +35,8 @@ export const renderLiquidDoc = async (
 };
 
 /** Render Liquid template on docs */
-export const renderLiquidDocs = (
+export const renderLiquidDocs = (context: Context) =>
+(
   docs: AwaitableIterable<Doc>,
-  context: Context,
 ): AsyncGenerator<Doc> =>
   mapAsync(docs, (doc) => renderLiquidDoc(doc, context));
