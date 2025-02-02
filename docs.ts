@@ -1,6 +1,7 @@
 import * as doc from "./doc.ts";
 import { type Doc } from "./doc.ts";
-import { isIndexPath, type Path } from "./path.ts";
+import { pipe } from "./pipe.ts";
+import { globPaths, isIndexPath, type Path } from "./path.ts";
 import {
   type AwaitableIterable,
   dedupeAsync,
@@ -12,9 +13,11 @@ import type { Result } from "./result.ts";
 import { isErr } from "./result.ts";
 
 export const read = (
-  paths: Iterable<string>,
+  paths: AwaitableIterable<string>,
 ): AsyncGenerator<Result<Doc, Error>> =>
   mapAsync(paths, (path) => doc.read(path));
+
+export const readMatching = (glob: string) => pipe(glob, globPaths, read);
 
 /**
  * Dump errors to stderr

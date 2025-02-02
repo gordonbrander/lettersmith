@@ -1,4 +1,5 @@
 import { basename, dirname, extname } from "@std/path";
+import { expandGlob } from "@std/fs";
 
 export type Path = string;
 
@@ -26,3 +27,9 @@ export const setExtension = (
 /** Is path an index file? */
 export const isIndexPath = (path: Path): boolean =>
   basename(path, extname(path)) === "index";
+
+export async function* globPaths(glob: string): AsyncIterable<Path> {
+  for (const entry in expandGlob(glob)) {
+    yield entry;
+  }
+}
