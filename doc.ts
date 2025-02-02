@@ -1,6 +1,6 @@
 import { writeFileDeep } from "./io.ts";
 import { isNone, type Option } from "./option.ts";
-import { performAsync, Result } from "./result.ts";
+import { isOk, map as mapResult, ok, performAsync, Result } from "./result.ts";
 import { join as joinPath } from "@std/path";
 import { truncate280 } from "./text.ts";
 import {
@@ -9,6 +9,7 @@ import {
   setExtension as setPathExtension,
 } from "./path.ts";
 import { parseTimestamp, type Timestamp } from "./date.ts";
+import { parseFrontmatter as parseFrontmatterInText } from "./frontmatter.ts";
 import { isSome } from "./option.ts";
 import { isString } from "./check.ts";
 import { stripTags } from "./html.ts";
@@ -78,13 +79,35 @@ export const read = async (path: Path) => {
   });
 };
 
-/** Write a doc to its output path under a directory */
+export type WriteReceipt = {
+  id: Path;
+  output: Path;
+};
+
+/**
+ * Write a doc to its output path under a directory
+ * @returns a Result for a WriteEntry.
+ */
 export const write = async (
-  dir: Path,
   doc: Doc,
-): Promise<Result<null, Error>> => {
+  dir: Path,
+): Promise<Result<WriteReceipt, Error>> => {
   const writePath = joinPath(dir, doc.outputPath);
-  return await writeFileDeep(writePath, doc.content);
+  const writeResult = await writeFileDeep(writePath, doc.content);
+  return mapResult(writeResult, () => ({
+    id: doc.id,
+    output: doc.outputPath,
+  }));
+};
+
+export const logWriteResult = (
+  result: Result<WriteReceipt, Error>,
+) => {
+  if (isOk(result)) {
+    console.log("Wrote", `${result.ok.id} -> ${result.ok.output}`);
+  } else {
+    console.error("Write failed", result.error);
+  }
 };
 
 /** Create a deep copy of doc */
@@ -133,7 +156,23 @@ export const setExtension = (
     outputPath: setPathExtension(doc.outputPath, ext),
   });
 
-/** Uplift metadata, looking for blessed fields and assigning values to doc:
+/**
+ * Parse doc frontmatter, merging it into doc meta, with frontmatter fields winning.
+ * @returns a Result of doc, if parse was successful, or an error, if not.
+ */
+export const parseFrontmatter = (doc: Doc): Result<Doc, Error> =>
+  mapResult(
+    parseFrontmatterInText(doc.content),
+    ({ frontmatter, content }) =>
+      create({
+        ...doc,
+        content,
+        meta: { ...doc.meta, ...frontmatter },
+      }),
+  );
+
+/**
+ * Uplift metadata, looking for blessed fields and assigning their values to doc:
  * - title
  * - summary
  * - created
