@@ -1,5 +1,5 @@
 import * as doc from "./doc.ts";
-import { type Doc } from "./doc.ts";
+import { type Doc, logWriteResult, write as writeDoc } from "./doc.ts";
 import { pipe } from "./pipe.ts";
 import { globPaths, isIndexPath, type Path } from "./path.ts";
 import {
@@ -34,8 +34,20 @@ export const dumpErr = (
     return result.ok;
   });
 
+/**
+ * Write all docs, logging results
+ * @returns a promise for the completion of the build.
+ */
+export const build =
+  (dir: Path) => async (docs: AwaitableIterable<Doc>): Promise<void> => {
+    for await (const doc of docs) {
+      logWriteResult(await writeDoc(doc, dir));
+    }
+    return;
+  };
+
 /** Remove docs with given ID */
-export const removeWithId = (docs: AwaitableIterable<Doc>, id: Path) =>
+export const removeWithId = (id: Path) => (docs: AwaitableIterable<Doc>) =>
   filterAsync(docs, (doc) => doc.id !== id);
 
 /** Remove drafts */
