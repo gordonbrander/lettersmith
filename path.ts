@@ -1,4 +1,4 @@
-import { basename, dirname, extname } from "@std/path";
+import { basename, dirname, extname, relative } from "@std/path";
 import { expandGlob } from "@std/fs";
 
 export type Path = string;
@@ -28,8 +28,16 @@ export const setExtension = (
 export const isIndexPath = (path: Path): boolean =>
   basename(path, extname(path)) === "index";
 
+/** Make path relative to working directory */
+export const relativize = (path: Path): Path => relative("./", path);
+
+/**
+ * Get all paths matching glob.
+ * Paths are relative to current working directory.
+ * @returns an async iterable for path
+ */
 export async function* globPaths(glob: string): AsyncIterable<Path> {
-  for (const entry in expandGlob(glob)) {
-    yield entry;
+  for await (const { path } of expandGlob(glob)) {
+    yield relativize(path);
   }
 }
