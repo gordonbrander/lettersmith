@@ -3,10 +3,9 @@ import { type AwaitableIterable, mapAsync } from "./generator.ts";
 import { create as createDoc, type Doc } from "./doc.ts";
 import { setExtension } from "./path.ts";
 
-const parser = new Parser();
-const renderer = new HtmlRenderer();
-
 export const renderMarkdown = (markdown: string): string => {
+  const parser = new Parser();
+  const renderer = new HtmlRenderer();
   const parsed = parser.parse(markdown) as Parser;
   const rendered = renderer.render(parsed) as string;
   return rendered;
