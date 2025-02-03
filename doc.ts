@@ -13,10 +13,10 @@ import {
   Path,
   setExtension as setPathExtension,
 } from "./utils/path.ts";
-import { parseTimestamp, type Timestamp } from "./utils/date.ts";
+import { readTimestamp, type Timestamp } from "./utils/date.ts";
 import { parseFrontmatter as parseFrontmatterInText } from "./frontmatter.ts";
 import { isSome } from "./utils/option.ts";
-import { isString } from "./utils/check.ts";
+import { isDate, isString } from "./utils/check.ts";
 import { stripTags } from "./utils/html.ts";
 import { pipe } from "./utils/pipe.ts";
 
@@ -196,15 +196,15 @@ export const upliftMeta = (doc: Doc): Doc => {
     draft.summary = doc.meta.summary;
   }
 
-  if (isString(doc.meta.created)) {
-    const date = parseTimestamp(doc.meta.created);
+  if (isString(doc.meta.created) || isDate(doc.meta.created)) {
+    const date = readTimestamp(doc.meta.created);
     if (isSome(date)) {
       draft.created = date;
     }
   }
 
-  if (isString(doc.meta.modified)) {
-    const date = parseTimestamp(doc.meta.modified);
+  if (isString(doc.meta.modified) || isDate(doc.meta.modified)) {
+    const date = readTimestamp(doc.meta.modified);
     if (isSome(date)) {
       draft.modified = date;
     }
