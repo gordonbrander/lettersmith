@@ -1,6 +1,6 @@
 {
   "name": "@gordonb/lettersmith",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "tasks": {
     "test": "deno test --allow-read --allow-env --allow-run"
