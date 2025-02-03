@@ -7,6 +7,7 @@ export * as bundle from "./bundle.ts";
 export * as server from "./server.ts";
 export * as rss from "./rss.ts";
 export * as sitemap from "./sitemap.ts";
+export { copy } from "./utils/copy.ts";
 export * as option from "./utils/option.ts";
 export * as io from "./utils/io.ts";
 export * as html from "./utils/html.ts";
