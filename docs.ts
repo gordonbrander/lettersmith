@@ -50,7 +50,7 @@ export const removeWithId =
 /** Remove drafts */
 export const removeDrafts = (
   docs: AwaitableIterable<Doc>,
-): AsyncGenerator<Doc> => filterAsync(docs, (d) => d.meta.draft === false);
+): AsyncGenerator<Doc> => filterAsync(docs, (d) => d.meta.draft !== true);
 
 /** Remove index files */
 export const removeIndex = (
