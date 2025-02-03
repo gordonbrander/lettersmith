@@ -4,7 +4,7 @@ import {
   map,
   mapOr,
   mapOrElse,
-  Option,
+  type Option,
   unwrap,
   unwrapOr,
   unwrapOrElse,

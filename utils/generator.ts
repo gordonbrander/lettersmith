@@ -122,10 +122,10 @@ export function* takeWhile<T>(
   }
 }
 
-export async function* dedupe<T>(
+export function* dedupe<T>(
   iter: Iterable<T>,
   getKey: (value: T) => string,
-) {
+): Generator<T> {
   const seen: Set<string> = new Set();
   for (const value of iter) {
     const key = getKey(value);
@@ -236,7 +236,7 @@ export async function* takeWhileAsync<T>(
 export async function* dedupeAsync<T>(
   iter: AwaitableIterable<T>,
   getKey: (value: T) => string,
-) {
+): AsyncGenerator<T> {
   const seen: Set<string> = new Set();
   for await (const value of iter) {
     const key = getKey(value);

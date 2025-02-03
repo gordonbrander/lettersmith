@@ -1,4 +1,4 @@
-import { Json, normalize } from "./json.ts";
+import { type Json, normalize } from "./json.ts";
 import { assertEquals } from "@std/assert";
 
 Deno.test("normalize JSON", async (t) => {

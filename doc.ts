@@ -4,13 +4,13 @@ import {
   isOk,
   map as mapResult,
   performAsync,
-  Result,
+  type Result,
 } from "./utils/result.ts";
 import { join as joinPath } from "@std/path";
 import { truncate280 } from "./utils/text.ts";
 import {
   getAutoTemplateForPath,
-  Path,
+  type Path,
   setExtension as setPathExtension,
 } from "./utils/path.ts";
 import { readTimestamp, type Timestamp } from "./utils/date.ts";
@@ -73,7 +73,7 @@ export const create = (
  * Read basic doc from path.
  * Assigns doc contents to `content` field and path to `id` and `outputPath`.
  */
-export const read = async (path: Path) => {
+export const read = async (path: Path): Promise<Result<Doc, Error>> => {
   return await performAsync<Doc, Error>(async () => {
     const content = await Deno.readTextFile(path);
     return create({
@@ -107,7 +107,7 @@ export const write = async (
 
 export const logWriteResult = (
   result: Result<WriteReceipt, Error>,
-) => {
+): void => {
   if (isOk(result)) {
     console.log("Wrote", `${result.ok.id} -> ${result.ok.output}`);
   } else {

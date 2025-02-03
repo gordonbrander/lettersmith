@@ -1,4 +1,4 @@
-import { Option } from "./option.ts";
+import type { Option } from "./option.ts";
 
 export type Ok<T> = { ok: T };
 export type Error<E> = { error: E };

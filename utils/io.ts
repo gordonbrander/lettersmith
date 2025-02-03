@@ -1,5 +1,5 @@
 import { ensureFile } from "@std/fs";
-import { performAsync, Result } from "./result.ts";
+import { performAsync, type Result } from "./result.ts";
 import type { Path } from "./path.ts";
 
 /** Write a file to path, creating intermediate directories as needed */

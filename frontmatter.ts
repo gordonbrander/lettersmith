@@ -1,5 +1,5 @@
 import { parse } from "@std/yaml";
-import { ok, perform, Result } from "./utils/result.ts";
+import { ok, perform, type Result } from "./utils/result.ts";
 import { isRecord } from "./utils/check.ts";
 
 const FRONTMATTER_REGEX = /^---\n(.*)---\n?/s;

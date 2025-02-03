@@ -1,5 +1,5 @@
 import * as doc from "./doc.ts";
-import { type Doc } from "./doc.ts";
+import type { Doc } from "./doc.ts";
 import { pipe } from "./utils/pipe.ts";
 import { globPaths, isIndexPath, type Path } from "./utils/path.ts";
 import {
@@ -18,7 +18,9 @@ export const read = (
 ): AsyncGenerator<Result<Doc, Error>> =>
   mapAsync(paths, (path) => doc.read(path));
 
-export const readMatching = (glob: string) => pipe(glob, globPaths, read);
+export const readMatching = (
+  glob: string,
+): AsyncGenerator<Result<Doc, Error>> => pipe(glob, globPaths, read);
 
 /**
  * Dump errors to stderr
@@ -57,7 +59,9 @@ export const write =
  * console.log("Built all three!");
  * @returns a promise for the completion of the build.
  */
-export const build = (dir: Path) => {
+export const build = (
+  dir: Path,
+): (...groups: AwaitableIterable<Doc>[]) => Promise<void> => {
   const writeToDir = write(dir);
   return (...groups: AwaitableIterable<Doc>[]): Promise<void> =>
     writeToDir(flattenAsync(groups));

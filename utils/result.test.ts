@@ -9,7 +9,7 @@ import {
   mapOrElse,
   ok,
   perform,
-  Result,
+  type Result,
   ResultError,
   toOption,
   unwrap,
