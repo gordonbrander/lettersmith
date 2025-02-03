@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@gordonb/generator@^0.0.1": "0.0.1",
     "jsr:@gordonb/pipe@^0.0.1": "0.0.1",
     "jsr:@noble/hashes@^1.7.1": "1.7.1",
     "jsr:@std/assert@1": "1.0.11",
@@ -13,6 +14,9 @@
     "npm:liquidjs@^10.20.2": "10.20.2"
   },
   "jsr": {
+    "@gordonb/generator@0.0.1": {
+      "integrity": "3fdbba59875233d0e2e14fb041bfdbf0e5061103b9fcf61cc176d50e187cb76e"
+    },
     "@gordonb/pipe@0.0.1": {
       "integrity": "7d1f636d0f6a545155e732ccc182853422bc0cf6d6bb6260a4ab33272a4b8c65"
     },
@@ -176,6 +180,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@gordonb/generator@^0.0.1",
       "jsr:@gordonb/pipe@^0.0.1",
       "jsr:@noble/hashes@^1.7.1",
       "jsr:@std/assert@1",

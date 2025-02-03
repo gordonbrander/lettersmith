@@ -1,5 +1,5 @@
 import { HtmlRenderer, Parser } from "commonmark";
-import { type AwaitableIterable, mapAsync } from "./utils/generator.ts";
+import { type AwaitableIterable, mapAsync } from "@gordonb/generator";
 import { create as createDoc, type Doc } from "./doc.ts";
 import { setExtension } from "./utils/path.ts";
 

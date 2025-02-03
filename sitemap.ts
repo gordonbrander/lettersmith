@@ -1,5 +1,5 @@
 import { create as createDoc, type Doc } from "./doc.ts";
-import { type AwaitableIterable, takeAsync } from "./utils/generator.ts";
+import { type AwaitableIterable, takeAsync } from "@gordonb/generator";
 import { renderLiquid } from "./liquid.ts";
 
 const SITEMAP_TEMPLATE = `<?xml version="1.0" encoding="UTF-8"?>

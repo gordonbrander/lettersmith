@@ -1,4 +1,4 @@
-import type { AwaitableIterable } from "./utils/generator.ts";
+import type { AwaitableIterable } from "@gordonb/generator";
 import { create as createDoc, type Doc } from "./doc.ts";
 import { renderLiquid } from "./liquid.ts";
 import { recent } from "./docs.ts";

@@ -9,9 +9,9 @@ import {
   filterMapAsync,
   flattenAsync,
   mapAsync,
-} from "./utils/generator.ts";
+  takeAsync,
+} from "@gordonb/generator";
 import { isErr, type Result } from "./utils/result.ts";
-import { takeAsync } from "./utils/generator.ts";
 
 export const read = (
   paths: AwaitableIterable<string>,

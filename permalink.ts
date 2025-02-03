@@ -1,5 +1,5 @@
 import { create as createDoc, type Doc } from "./doc.ts";
-import { type AwaitableIterable, mapAsync } from "./utils/generator.ts";
+import { type AwaitableIterable, mapAsync } from "@gordonb/generator";
 import type { Path } from "./utils/path.ts";
 
 /** Render permalink on a doc, using a closure to generate the permalink */
