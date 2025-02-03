@@ -171,7 +171,7 @@ export async function* filterAsync<T>(
  * Flattens nested async iterables
  */
 export async function* flattenAsync<T>(
-  iter: AwaitableIterable<AsyncIterable<T>>,
+  iter: AwaitableIterable<AwaitableIterable<T>>,
 ): AsyncGenerator<T, void, undefined> {
   for await (const inner of iter) {
     yield* inner;
@@ -183,10 +183,10 @@ export async function* flattenAsync<T>(
  */
 export async function* flatMapAsync<T, U>(
   iter: AwaitableIterable<T>,
-  fn: (value: T) => Awaitable<AsyncIterable<U>>,
+  fn: (value: T) => AwaitableIterable<U>,
 ): AsyncGenerator<U, void, undefined> {
   for await (const value of iter) {
-    yield* await fn(value);
+    yield* fn(value);
   }
 }
 
