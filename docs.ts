@@ -6,46 +6,28 @@ import {
   type AwaitableIterable,
   dedupeAsync,
   filterAsync,
-  filterMapAsync,
   flattenAsync,
   mapAsync,
   takeAsync,
 } from "@gordonb/generator";
-import { isErr, type Result } from "./utils/result.ts";
 
 export const read = (
   paths: AwaitableIterable<string>,
-): AsyncGenerator<Result<Doc, Error>> =>
-  mapAsync(paths, (path) => doc.read(path));
+): AsyncGenerator<Doc> => mapAsync(paths, (path) => doc.read(path));
 
 export const readMatching = (
   glob: string,
-): AsyncGenerator<Result<Doc, Error>> => pipe(glob, globPaths, read);
+): AsyncGenerator<Doc> => pipe(glob, globPaths, read);
 
 /**
- * Dump errors to stderr
- * @returns a generator for just the docs that successfully loaded
- */
-export const dumpErr = (
-  docs: AwaitableIterable<Result<Doc, Error>>,
-): AsyncGenerator<Doc> =>
-  filterMapAsync(docs, (result) => {
-    if (isErr(result)) {
-      console.error(result.error);
-      return null;
-    }
-    return result.ok;
-  });
-
-/**
- * Write all docs, logging results.
+ * Write all docs, logging receipts.
  * Supports passing more than one docs iterable.
  * @returns a promise for the completion of the build.
  */
 export const write =
   (dir: Path) => async (docs: AwaitableIterable<Doc>): Promise<void> => {
     for await (const d of docs) {
-      doc.logWriteResult(await doc.write(d, dir));
+      doc.logWriteReceipt(await doc.write(d, dir));
     }
     return;
   };
@@ -99,7 +81,7 @@ export const setExtension =
 
 export const parseFrontmatter = (
   docs: AwaitableIterable<Doc>,
-): AsyncGenerator<Result<Doc, Error>> => mapAsync(docs, doc.parseFrontmatter);
+): AsyncGenerator<Doc> => mapAsync(docs, doc.parseFrontmatter);
 
 export const upliftMeta = (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
   mapAsync(docs, doc.upliftMeta);

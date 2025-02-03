@@ -1,11 +1,5 @@
 import { writeFileDeep } from "./utils/io.ts";
 import { isNone, type Option } from "./utils/option.ts";
-import {
-  isOk,
-  map as mapResult,
-  performAsync,
-  type Result,
-} from "./utils/result.ts";
 import { join as joinPath } from "@std/path";
 import { truncate280 } from "./utils/text.ts";
 import {
@@ -14,7 +8,7 @@ import {
   setExtension as setPathExtension,
 } from "./utils/path.ts";
 import { readTimestamp, type Timestamp } from "./utils/date.ts";
-import { parseFrontmatter as parseFrontmatterInText } from "./frontmatter.ts";
+import { parseFrontmatter as parseFrontmatterInText } from "./utils/frontmatter.ts";
 import { isSome } from "./utils/option.ts";
 import { isDate, isString } from "./utils/check.ts";
 import { stripTags } from "./utils/html.ts";
@@ -73,14 +67,12 @@ export const create = (
  * Read basic doc from path.
  * Assigns doc contents to `content` field and path to `id` and `outputPath`.
  */
-export const read = async (path: Path): Promise<Result<Doc, Error>> => {
-  return await performAsync<Doc, Error>(async () => {
-    const content = await Deno.readTextFile(path);
-    return create({
-      id: path,
-      outputPath: path,
-      content,
-    });
+export const read = async (path: Path): Promise<Doc> => {
+  const content = await Deno.readTextFile(path);
+  return create({
+    id: path,
+    outputPath: path,
+    content,
   });
 };
 
@@ -91,28 +83,24 @@ export type WriteReceipt = {
 
 /**
  * Write a doc to its output path under a directory
- * @returns a Result for a WriteEntry.
+ * @returns a WriteReceipt.
  */
 export const write = async (
   doc: Doc,
   dir: Path,
-): Promise<Result<WriteReceipt, Error>> => {
+): Promise<WriteReceipt> => {
   const writePath = joinPath(dir, doc.outputPath);
-  const writeResult = await writeFileDeep(writePath, doc.content);
-  return mapResult(writeResult, () => ({
+  await writeFileDeep(writePath, doc.content);
+  return {
     id: doc.id,
     output: doc.outputPath,
-  }));
+  };
 };
 
-export const logWriteResult = (
-  result: Result<WriteReceipt, Error>,
+export const logWriteReceipt = (
+  { id, output }: WriteReceipt,
 ): void => {
-  if (isOk(result)) {
-    console.log("Wrote", `${result.ok.id} -> ${result.ok.output}`);
-  } else {
-    console.error("Write failed", result.error);
-  }
+  console.log("Wrote", `${id} -> ${output}`);
 };
 
 /** Create a deep copy of doc */
@@ -163,18 +151,16 @@ export const setExtension = (
 
 /**
  * Parse doc frontmatter, merging it into doc meta, with frontmatter fields winning.
- * @returns a Result of doc, if parse was successful, or an error, if not.
+ * @returns a doc, if parse was successful, throws an error, if not.
  */
-export const parseFrontmatter = (doc: Doc): Result<Doc, Error> =>
-  mapResult(
-    parseFrontmatterInText(doc.content),
-    ({ frontmatter, content }) =>
-      create({
-        ...doc,
-        content,
-        meta: { ...doc.meta, ...frontmatter },
-      }),
-  );
+export const parseFrontmatter = (doc: Doc): Doc => {
+  const { frontmatter, content } = parseFrontmatterInText(doc.content);
+  return create({
+    ...doc,
+    content,
+    meta: { ...doc.meta, ...frontmatter },
+  });
+};
 
 /**
  * Uplift metadata, looking for blessed fields and assigning their values to doc:
