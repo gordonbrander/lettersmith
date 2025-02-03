@@ -6,6 +6,16 @@ import type { AwaitableIterable } from "./utils/generator.ts";
 import type { Path } from "./utils/path.ts";
 import { join as joinPath } from "@std/path";
 import { exists } from "@std/fs";
+import { isString } from "./utils/check.ts";
+
+/** Implement filter for joining root URL to path */
+const filterPermalink = (path: unknown, root: unknown) => {
+  // Don't permalink non-string values
+  if (!isString(path) || !isString(root)) {
+    return path;
+  }
+  return new URL(path, root).toString();
+};
 
 export type Context = Record<string, unknown>;
 
@@ -22,6 +32,7 @@ export const renderLiquid = async (template: string, {
   const engine = new Liquid({
     root,
   });
+  engine.registerFilter("permalink", filterPermalink);
   return await engine.parseAndRender(template, context);
 };
 
