@@ -4,6 +4,7 @@ export * as markdown from "./markdown.ts";
 export * as liquid from "./liquid.ts";
 export * as permalink from "./permalink.ts";
 export * as bundle from "./bundle.ts";
+export * as server from "./server.ts";
 export * as rss from "./rss.ts";
 export * as sitemap from "./sitemap.ts";
 export * as option from "./utils/option.ts";
