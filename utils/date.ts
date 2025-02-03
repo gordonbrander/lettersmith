@@ -1,4 +1,5 @@
 import { isString } from "./check.ts";
+import { format } from "@std/datetime";
 
 export type Timestamp = number;
 
@@ -27,4 +28,22 @@ export const readTimestamp = (datelike: Date | string): number | null => {
   } else {
     return getTimestamp(datelike);
   }
+};
+
+/** Get the four-digit year */
+export const yyyy = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  return format(date, "yyyy");
+};
+
+/** Get the two-digit month */
+export const mm = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  return format(date, "MM");
+};
+
+/** Get the two-digit day */
+export const dd = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  return format(date, "dd");
 };

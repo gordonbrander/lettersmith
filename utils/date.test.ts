@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "@std/assert";
-import { parseTimestamp, readTimestamp } from "./date.ts";
+import { dd, mm, parseTimestamp, readTimestamp, yyyy } from "./date.ts";
 
 Deno.test("parseTimestamp", async (t) => {
   await t.step("it returns Date for valid date string", () => {
@@ -50,5 +50,36 @@ Deno.test("readTimestamp", async (t) => {
   await t.step("it returns null for empty string", () => {
     const result = readTimestamp("");
     assertEquals(result, null);
+  });
+});
+
+Deno.test("yyyy", async (t) => {
+  await t.step("it formats four-digit year from timestamp", () => {
+    const timestamp = new Date(2020, 0, 1).getTime();
+    assertEquals(yyyy(timestamp), "2020");
+  });
+});
+
+Deno.test("mm", async (t) => {
+  await t.step("it formats two-digit month from timestamp", () => {
+    const timestamp = new Date(2020, 0, 1).getTime();
+    assertEquals(mm(timestamp), "01");
+  });
+
+  await t.step("it zero-pads single digit months", () => {
+    const timestamp = new Date(2020, 8, 1).getTime();
+    assertEquals(mm(timestamp), "09");
+  });
+});
+
+Deno.test("dd", async (t) => {
+  await t.step("it formats two-digit day from timestamp", () => {
+    const timestamp = new Date(2020, 0, 1).getTime();
+    assertEquals(dd(timestamp), "01");
+  });
+
+  await t.step("it zero-pads single digit days", () => {
+    const timestamp = new Date(2020, 0, 5).getTime();
+    assertEquals(dd(timestamp), "05");
   });
 });

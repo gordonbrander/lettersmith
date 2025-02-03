@@ -24,9 +24,11 @@ export const setExtension = (
   return path.slice(0, -ext.length) + extension;
 };
 
+/** Get the path stem -the filename without the extension */
+export const stem = (path: Path): string => basename(path, extname(path));
+
 /** Is path an index file? */
-export const isIndexPath = (path: Path): boolean =>
-  basename(path, extname(path)) === "index";
+export const isIndexPath = (path: Path): boolean => stem(path) === "index";
 
 /** Make path relative to working directory */
 export const relativize = (path: Path): Path => relative("./", path);
