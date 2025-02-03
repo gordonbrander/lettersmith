@@ -10,6 +10,7 @@ import {
   mapAsync,
 } from "./utils/generator.ts";
 import { isErr, type Result } from "./utils/result.ts";
+import { takeAsync } from "./utils/generator.ts";
 
 export const read = (
   paths: AwaitableIterable<string>,
@@ -81,3 +82,36 @@ export const parseFrontmatter = (
 
 export const upliftMeta = (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
   mapAsync(docs, doc.upliftMeta);
+
+/**
+ * Sort docs using a compare function.
+ * Note: this function collects all items of iterable into memory for sorting.
+ */
+export async function* sortedBy(
+  docs: AwaitableIterable<Doc>,
+  compare: (a: Doc, b: Doc) => number,
+): AsyncGenerator<Doc> {
+  const collected = await Array.fromAsync(docs);
+  collected.sort(compare);
+  for (const doc of collected) {
+    yield doc;
+  }
+}
+
+/**
+ * Sort docs by created date, reverse chronological (blog format).
+ * Note: this function collects all items of iterable into memory for sorting.
+ */
+export const sortedReverseChron = (
+  docs: AwaitableIterable<Doc>,
+): AsyncGenerator<Doc> =>
+  sortedBy(docs, (a, b) => a.created > b.created ? -1 : 1);
+
+/**
+ * Sort docs by created date, reverse chronological (blog format), and take up
+ * to `max` items
+ */
+export const recent = (
+  docs: AwaitableIterable<Doc>,
+  max: number,
+): AsyncGenerator<Doc> => takeAsync(sortedReverseChron(docs), max);

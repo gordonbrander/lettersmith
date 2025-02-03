@@ -44,14 +44,14 @@ Deno.test("setExtension - Nested path", () => {
 });
 
 // Test isIndexPath with index file
-Deno.test("isIndexPath - With index file", () => {
+Deno.test("isIndexPath returns true for index file", () => {
   const path = "index.html";
   const result = isIndexPath(path);
   assertEquals(result, true);
 });
 
 // Test isIndexPath with non-index file
-Deno.test("isIndexPath - With non-index file", () => {
+Deno.test("isIndexPath returns false for non-index file", () => {
   const path = "post.md";
   const result = isIndexPath(path);
   assertEquals(result, false);
