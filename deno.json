@@ -1,8 +1,8 @@
 {
+  "name": "@gordonb/lettersmith",
   "version": "0.0.1",
   "tasks": {
-    "test": "deno test --allow-read --allow-env --allow-run",
-    "dev": "deno run --watch main.ts"
+    "test": "deno test --allow-read --allow-env --allow-run"
   },
   "imports": {
     "@noble/hashes": "jsr:@noble/hashes@^1.7.1",
