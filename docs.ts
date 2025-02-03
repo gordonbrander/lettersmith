@@ -20,33 +20,22 @@ export const readMatching = (
 ): AsyncGenerator<Doc> => pipe(glob, globPaths, read);
 
 /**
- * Write all docs, logging receipts.
- * Supports passing more than one docs iterable.
- * @returns a promise for the completion of the build.
- */
-export const write =
-  (dir: Path) => async (docs: AwaitableIterable<Doc>): Promise<void> => {
-    for await (const d of docs) {
-      doc.logWriteReceipt(await doc.write(d, dir));
-    }
-    return;
-  };
-
-/**
- * Write all docs, logging results.
- * Supports passing more than one docs iterable.
- * Build supports passing multiple doc iterables as varargs.
+ * Create a build function that supports passing multiple doc iterables as varargs.
+ * Returned build function allows passing multiple sync or async iterables of docs as varargs.
+ * Logs receipts to stdout for each doc written to file system.
  * @example
- * await build(docsA, docsB, docsC);
- * console.log("Built all three!");
- * @returns a promise for the completion of the build.
+ * const write = build("public");
+ * await write(docsA, docsB, docsC);
+ * console.log("Built everything!");
  */
 export const build = (
   dir: Path,
-): (...groups: AwaitableIterable<Doc>[]) => Promise<void> => {
-  const writeToDir = write(dir);
-  return (...groups: AwaitableIterable<Doc>[]): Promise<void> =>
-    writeToDir(flattenAsync(groups));
+): (...groups: AwaitableIterable<Doc>[]) => Promise<void> =>
+async (...groups: AwaitableIterable<Doc>[]): Promise<void> => {
+  for await (const d of flattenAsync(groups)) {
+    const { id, output } = await doc.write(d, dir);
+    console.log("Wrote", `${id} -> ${output}`);
+  }
 };
 
 /** Remove docs with given ID */

@@ -17,6 +17,7 @@
     "jsr:@std/path@^1.0.8": "1.0.8",
     "jsr:@std/streams@^1.0.9": "1.0.9",
     "jsr:@std/yaml@^1.0.5": "1.0.5",
+    "jsr:@valibot/valibot@~0.42.1": "0.42.1",
     "npm:commonmark@~0.31.2": "0.31.2",
     "npm:esbuild@~0.24.2": "0.24.2",
     "npm:liquidjs@^10.20.2": "10.20.2"
@@ -85,6 +86,9 @@
     },
     "@std/yaml@1.0.5": {
       "integrity": "71ba3d334305ee2149391931508b2c293a8490f94a337eef3a09cade1a2a2742"
+    },
+    "@valibot/valibot@0.42.1": {
+      "integrity": "ba0f6f7964aaeec0e4b1f793d575061f325ae6254cbb9d7ff01fb65068a0a23b"
     }
   },
   "npm": {
@@ -230,6 +234,7 @@
       "jsr:@std/http@^1.0.13",
       "jsr:@std/path@^1.0.8",
       "jsr:@std/yaml@^1.0.5",
+      "jsr:@valibot/valibot@~0.42.1",
       "npm:commonmark@~0.31.2",
       "npm:esbuild@~0.24.2",
       "npm:liquidjs@^10.20.2"

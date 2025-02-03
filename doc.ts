@@ -13,6 +13,7 @@ import { isSome } from "./utils/option.ts";
 import { isDate, isString } from "./utils/check.ts";
 import { stripTags } from "./utils/html.ts";
 import { pipe } from "@gordonb/pipe";
+import { isTags, type Tags } from "./utils/tags.ts";
 
 export type Meta = Record<string, unknown>;
 
@@ -25,6 +26,7 @@ export type Doc = {
   title: string;
   summary: string;
   content: string;
+  tags: Tags;
   meta: Meta;
 };
 
@@ -39,6 +41,7 @@ export const create = (
     title = "",
     summary = "",
     content = "",
+    tags = [],
     meta = {},
   }: {
     id: Path;
@@ -49,6 +52,7 @@ export const create = (
     title?: string;
     summary?: string;
     content?: string;
+    tags?: Tags;
     meta?: Meta;
   },
 ): Doc => ({
@@ -60,6 +64,7 @@ export const create = (
   title,
   summary,
   content,
+  tags,
   meta,
 });
 
@@ -95,12 +100,6 @@ export const write = async (
     id: doc.id,
     output: doc.outputPath,
   };
-};
-
-export const logWriteReceipt = (
-  { id, output }: WriteReceipt,
-): void => {
-  console.log("Wrote", `${id} -> ${output}`);
 };
 
 /** Create a deep copy of doc */
@@ -166,6 +165,7 @@ export const parseFrontmatter = (doc: Doc): Doc => {
  * Uplift metadata, looking for blessed fields and assigning their values to doc:
  * - title
  * - summary
+ * - tags
  * - created
  * - modified
  * - permalink
@@ -194,6 +194,10 @@ export const upliftMeta = (doc: Doc): Doc => {
     if (isSome(date)) {
       draft.modified = date;
     }
+  }
+
+  if (isTags(doc.meta.tags)) {
+    draft.tags = doc.meta.tags;
   }
 
   if (isString(doc.meta.permalink)) {
