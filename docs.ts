@@ -10,6 +10,7 @@ import {
   mapAsync,
   takeAsync,
 } from "@gordonb/generator";
+import { join as joinPath } from "@std/path/join";
 
 export const read = (
   paths: AwaitableIterable<string>,
@@ -35,7 +36,8 @@ async (...groups: AwaitableIterable<Doc>[]): Promise<void> => {
   for await (const d of flattenAsync(groups)) {
     try {
       const { id, output } = await doc.write(d, dir);
-      console.log("Wrote", `${id} -> ${output}`);
+      const fullOutputPath = joinPath(dir, output);
+      console.log("Wrote", `${id} -> ${fullOutputPath}`);
     } catch (error) {
       throw new Error(`Failed to build doc ${d.id}`, { cause: error });
     }
