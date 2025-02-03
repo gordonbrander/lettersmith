@@ -7,6 +7,7 @@ import {
   dedupeAsync,
   filterAsync,
   filterMapAsync,
+  flattenAsync,
   mapAsync,
 } from "./utils/generator.ts";
 import { isErr, type Result } from "./utils/result.ts";
@@ -35,16 +36,32 @@ export const dumpErr = (
   });
 
 /**
- * Write all docs, logging results
+ * Write all docs, logging results.
+ * Supports passing more than one docs iterable.
  * @returns a promise for the completion of the build.
  */
-export const build =
+export const write =
   (dir: Path) => async (docs: AwaitableIterable<Doc>): Promise<void> => {
     for await (const d of docs) {
       doc.logWriteResult(await doc.write(d, dir));
     }
     return;
   };
+
+/**
+ * Write all docs, logging results.
+ * Supports passing more than one docs iterable.
+ * Build supports passing multiple doc iterables as varargs.
+ * @example
+ * await build(docsA, docsB, docsC);
+ * console.log("Built all three!");
+ * @returns a promise for the completion of the build.
+ */
+export const build = (dir: Path) => {
+  const writeToDir = write(dir);
+  return (...groups: AwaitableIterable<Doc>[]): Promise<void> =>
+    writeToDir(flattenAsync(groups));
+};
 
 /** Remove docs with given ID */
 export const removeWithId =
