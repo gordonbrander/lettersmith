@@ -21,8 +21,6 @@ export const createSitemapDoc = async (
   const created = Date.now();
   const docs50k = await Array.fromAsync(takeAsync(docs, 50000));
 
-  console.log("!!!", docs50k);
-
   const content = await renderLiquid(SITEMAP_TEMPLATE, {
     context: {
       sitemap: docs50k,
