@@ -18,8 +18,8 @@ const RSS_TEMPLATE = `
   {% for doc in recent %}
   <item>
     <title>{{ doc.title }}</title>
-    <link>{{ doc.outputPath | prepend: site.url }}</link>
-    <guid isPermaLink="true">{{ doc.outputPath | prepend: site.url }}</guid>
+    <link>{{ doc.outputPath | permalink: site.url }}</link>
+    <guid isPermaLink="true">{{ doc.outputPath | permalink: site.url }}</guid>
     <description>{{ doc.content | xml_escape }}</description>
     <content:encoded><![CDATA[
       {{ doc.content }}
@@ -39,7 +39,12 @@ const RSS_TEMPLATE = `
 </rss>
 `;
 
-/** Generate an RSS doc from docs */
+/**
+ * Generate an RSS doc from docs
+ * Consumes `docs` and generates an RSS doc from them.
+ * Note: this function collects all docs into memory.
+ * @returns a promise for the RSS doc
+ */
 export const createRssDoc = async (docs: AwaitableIterable<Doc>, {
   outputPath,
   url,
@@ -83,9 +88,11 @@ export const createRssDoc = async (docs: AwaitableIterable<Doc>, {
 };
 
 /**
- * Generate RSS doc from docs.
+ * Generate an async iterable containing an RSS doc.
  * Combinator returns a generator function that consumes a docs generator
  * and yields a single doc representing the RSS feed.
+ * Note: this function collects all docs into memory.
+ * @returns a promise for the RSS doc
  */
 export const rss = ({
   outputPath,
@@ -102,7 +109,7 @@ export const rss = ({
   author?: string;
   modified?: number;
 }) =>
-  async function* (docs: AwaitableIterable<Doc>) {
+  async function* (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> {
     yield await createRssDoc(docs, {
       outputPath,
       url,
