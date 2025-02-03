@@ -6,8 +6,8 @@
     "test": "deno test --allow-read --allow-env --allow-run"
   },
   "imports": {
-    "@gordonb/generator": "jsr:@gordonb/generator@^0.0.1",
-    "@gordonb/pipe": "jsr:@gordonb/pipe@^0.0.1",
+    "@gordonb/generator": "jsr:@gordonb/generator@^0.1.0",
+    "@gordonb/pipe": "jsr:@gordonb/pipe@^0.1.0",
     "@noble/hashes": "jsr:@noble/hashes@^1.7.1",
     "@std/assert": "jsr:@std/assert@1",
     "@std/fs": "jsr:@std/fs@^1.0.11",

@@ -9,3 +9,4 @@ export * as markdown from "./markdown.ts";
 export * as liquid from "./liquid.ts";
 export * as html from "./utils/html.ts";
 export * as permalink from "./permalink.ts";
+export * as bundle from "./bundle.ts";

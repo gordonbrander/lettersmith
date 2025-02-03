@@ -1,8 +1,8 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@gordonb/generator@^0.0.1": "0.0.1",
-    "jsr:@gordonb/pipe@^0.0.1": "0.0.1",
+    "jsr:@gordonb/generator@0.1": "0.1.0",
+    "jsr:@gordonb/pipe@0.1": "0.1.0",
     "jsr:@noble/hashes@^1.7.1": "1.7.1",
     "jsr:@std/assert@1": "1.0.11",
     "jsr:@std/fs@^1.0.11": "1.0.11",
@@ -14,11 +14,11 @@
     "npm:liquidjs@^10.20.2": "10.20.2"
   },
   "jsr": {
-    "@gordonb/generator@0.0.1": {
-      "integrity": "3fdbba59875233d0e2e14fb041bfdbf0e5061103b9fcf61cc176d50e187cb76e"
+    "@gordonb/generator@0.1.0": {
+      "integrity": "eac65b48c7227f111cb799325faa0753b05bd4c91148198713bad52a388b7f57"
     },
-    "@gordonb/pipe@0.0.1": {
-      "integrity": "7d1f636d0f6a545155e732ccc182853422bc0cf6d6bb6260a4ab33272a4b8c65"
+    "@gordonb/pipe@0.1.0": {
+      "integrity": "aca3160a31091720b858d05bef3ecca0c7230cefaeff24ca41fe0b497247e74d"
     },
     "@noble/hashes@1.7.1": {
       "integrity": "2c29f1dc07943155f5c7384be6f570a749c2afee95a0557cdae02b4fd5956134"
@@ -180,8 +180,8 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@gordonb/generator@^0.0.1",
-      "jsr:@gordonb/pipe@^0.0.1",
+      "jsr:@gordonb/generator@0.1",
+      "jsr:@gordonb/pipe@0.1",
       "jsr:@noble/hashes@^1.7.1",
       "jsr:@std/assert@1",
       "jsr:@std/fs@^1.0.11",
