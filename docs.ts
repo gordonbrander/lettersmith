@@ -33,8 +33,12 @@ export const build = (
 ): (...groups: AwaitableIterable<Doc>[]) => Promise<void> =>
 async (...groups: AwaitableIterable<Doc>[]): Promise<void> => {
   for await (const d of flattenAsync(groups)) {
-    const { id, output } = await doc.write(d, dir);
-    console.log("Wrote", `${id} -> ${output}`);
+    try {
+      const { id, output } = await doc.write(d, dir);
+      console.log("Wrote", `${id} -> ${output}`);
+    } catch (error) {
+      throw new Error(`Failed to build doc ${d.id}`, { cause: error });
+    }
   }
 };
 
