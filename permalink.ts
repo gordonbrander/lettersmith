@@ -36,8 +36,7 @@ export const permalinkDoc = (
   });
 
 /** Render permalinks on docs, using a closure to generate the permalink */
-export const permalinkDocs = (
-  docs: AwaitableIterable<Doc>,
-  readPermalink: (props: PermalinkProps) => Path,
-): AsyncGenerator<Doc> =>
-  mapAsync(docs, (doc) => permalinkDoc(doc, readPermalink));
+export const permalinkDocs =
+  (readPermalink: (props: PermalinkProps) => Path) =>
+  (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
+    mapAsync(docs, (doc) => permalinkDoc(doc, readPermalink));
