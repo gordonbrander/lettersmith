@@ -1,6 +1,16 @@
-import { array, type InferOutput, is, string } from "@valibot/valibot";
+import {
+  array,
+  type ArraySchema,
+  type InferOutput,
+  is,
+  string,
+  type StringSchema,
+} from "@valibot/valibot";
 
-const TagsSchema = array(string());
+const TagsSchema: ArraySchema<StringSchema<string>, string> = array(
+  string("Tag must be string"),
+  "Tags must be array of strings",
+);
 
 export type Tags = InferOutput<typeof TagsSchema>;
 
