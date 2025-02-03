@@ -18,7 +18,7 @@ import { parseFrontmatter as parseFrontmatterInText } from "./frontmatter.ts";
 import { isSome } from "./utils/option.ts";
 import { isDate, isString } from "./utils/check.ts";
 import { stripTags } from "./utils/html.ts";
-import { pipe } from "./utils/pipe.ts";
+import { pipe } from "@gordonb/pipe";
 
 export type Meta = Record<string, unknown>;
 

@@ -1,6 +1,6 @@
 import * as doc from "./doc.ts";
 import type { Doc } from "./doc.ts";
-import { pipe } from "./utils/pipe.ts";
+import { pipe } from "@gordonb/pipe";
 import { globPaths, isIndexPath, type Path } from "./utils/path.ts";
 import {
   type AwaitableIterable,
