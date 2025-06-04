@@ -40,6 +40,28 @@ Content here`;
   assertEquals(result.content, "Content here");
 });
 
+Deno.test("parseFrontmatter is not greedy when seeking fences", () => {
+  const content = `---
+title: Hello
+date: 2020-01-01
+---
+
+Content here
+
+---
+
+More content
+`;
+
+  const result = parseFrontmatter(content);
+
+  assertEquals(result.frontmatter, {
+    title: "Hello",
+    date: new Date("2020-01-01T00:00:00.000Z"),
+  });
+  assertEquals(result.content, "\nContent here\n\n---\n\nMore content\n");
+});
+
 Deno.test("parseFrontmatter handles frontmatter in documents that end immediately after the block close", () => {
   const content = `---
 title: "Hello"

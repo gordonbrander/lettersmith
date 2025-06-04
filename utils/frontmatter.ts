@@ -1,7 +1,7 @@
 import { parse } from "@std/yaml";
 import { isRecord } from "./check.ts";
 
-const FRONTMATTER_REGEX = /^---\n(.*)---\n?/s;
+const FRONTMATTER_REGEX = /^---\n(.*?)---\n?/su;
 
 export type ParsedFrontMatter = {
   frontmatter: Record<string, unknown>;
