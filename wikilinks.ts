@@ -9,7 +9,7 @@ export type Wikilink = {
   text: string;
 };
 
-/// Render wikilinks in a markup string
+/** Render wikilinks in a markup string */
 export const renderWikilinks = (
   markup: string,
   replace: (wikilink: Wikilink) => string,
@@ -24,7 +24,7 @@ export const renderWikilinks = (
     return replace({ slug: toSlug(parts[0]), text: parts[1] });
   });
 
-/// Render wikilinks in doc content
+/** Render wikilinks in doc content */
 export const renderWikilinkDoc = (
   doc: Doc,
   replace: (wikilink: Wikilink) => string,
@@ -34,8 +34,8 @@ export const renderWikilinkDoc = (
     content: renderWikilinks(doc.content, replace),
   });
 
-/// Render wikilinks for an iterator of docs
-export const renderMarkdownDocs = (
+/** Render wikilinks for an iterator of docs. */
+export const renderWikilinkDocs = (
   replace: (wikilink: Wikilink) => string,
 ) =>
 (
