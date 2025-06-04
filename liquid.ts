@@ -61,7 +61,7 @@ export const renderLiquidDoc = async (
     root,
     context: {
       ...context,
-      self: doc,
+      ...doc,
     },
   });
 
