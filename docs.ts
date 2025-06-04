@@ -29,10 +29,10 @@ export const readMatching = (
  * await write(docsA, docsB, docsC);
  * console.log("Built everything!");
  */
-export const build = (
+export const build = async (
   dir: Path,
-): (...groups: AwaitableIterable<Doc>[]) => Promise<void> =>
-async (...groups: AwaitableIterable<Doc>[]): Promise<void> => {
+  ...groups: AwaitableIterable<Doc>[]
+): Promise<void> => {
   for await (const d of flattenAsync(groups)) {
     try {
       const { id, output } = await doc.write(d, dir);
