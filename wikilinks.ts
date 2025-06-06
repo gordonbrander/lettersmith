@@ -1,5 +1,5 @@
 import { toSlug } from "./utils/slug.ts";
-import { type AwaitableIterable, mapAsync } from "@gordonb/generator";
+import { type AwaitableIterable, map, mapAsync } from "@gordonb/generator";
 import { create as createDoc, type Doc } from "./doc.ts";
 
 const WIKILINK_REGEXP = /\[\[([^\]]+)\]\]/g;
@@ -9,20 +9,33 @@ export type Wikilink = {
   text: string;
 };
 
+const parseWikilinkBody = (body: string): Wikilink => {
+  const parts = body.split("|");
+  // No pipe
+  if (parts.length === 1) {
+    const slug = toSlug(body);
+    return { slug, text: body };
+  }
+  return { slug: toSlug(parts[0]), text: parts[1] };
+};
+
 /** Render wikilinks in a markup string */
 export const renderWikilinks = (
   markup: string,
   replace: (wikilink: Wikilink) => string,
 ): string =>
   markup.replace(WIKILINK_REGEXP, (_, text) => {
-    const parts = text.split("|");
-    // No pipe
-    if (parts.length === 1) {
-      const slug = toSlug(text);
-      return replace({ slug, text });
-    }
-    return replace({ slug: toSlug(parts[0]), text: parts[1] });
+    return replace(parseWikilinkBody(text));
   });
+
+/** Find all wikilinks in a string, returning them as an array of `Wikilink` */
+export const findWikilinks = (content: string): Wikilink[] =>
+  Array.from(
+    map(
+      content.matchAll(WIKILINK_REGEXP),
+      ([_, text]) => parseWikilinkBody(text),
+    ),
+  );
 
 /** Render wikilinks in doc content */
 export const renderWikilinkDoc = (
