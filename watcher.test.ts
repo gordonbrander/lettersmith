@@ -1,70 +1,58 @@
 import { assertEquals } from "@std/assert";
 import { excludePaths } from "./watcher.ts";
-import { globToRegExp } from "@std/path";
 
-Deno.test("excludePaths excludes paths matching glob pattern", () => {
+Deno.test("excludePaths - filters paths matching exact string", () => {
   const paths = [
     "src/index.ts",
-    "src/utils.ts",
-    "node_modules/package/index.js",
-    "dist/build.js",
+    "public/style.css",
+    "public/script.js",
     "README.md",
   ];
-  const exclude = globToRegExp("node_modules/**");
-  const result = excludePaths(paths, exclude);
-
-  assertEquals(result, [
-    "src/index.ts",
-    "src/utils.ts",
-    "dist/build.js",
-    "README.md",
-  ]);
+  const result = excludePaths(paths, "public");
+  assertEquals(result, ["src/index.ts", "README.md"]);
 });
 
-Deno.test("excludePaths excludes multiple patterns", () => {
+Deno.test("excludePaths - filters paths matching glob pattern", () => {
   const paths = [
     "src/index.ts",
-    "src/test.ts",
-    "build/output.js",
     "dist/bundle.js",
-    "temp/cache.tmp",
-  ];
-  const exclude = globToRegExp("{build,dist,temp}/**");
-  const result = excludePaths(paths, exclude);
-
-  assertEquals(result, [
-    "src/index.ts",
-    "src/test.ts",
-  ]);
-});
-
-Deno.test("excludePaths returns all paths when no matches", () => {
-  const paths = [
-    "src/index.ts",
-    "src/utils.ts",
+    "dist/style.css",
     "README.md",
   ];
-  const exclude = globToRegExp("node_modules/**");
-  const result = excludePaths(paths, exclude);
-
-  assertEquals(result, paths);
+  const result = excludePaths(paths, "dist/*");
+  assertEquals(result, ["src/index.ts", "README.md"]);
 });
 
-Deno.test("excludePaths returns empty array when all paths match", () => {
+Deno.test("excludePaths - handles nested paths with exact match", () => {
   const paths = [
-    "node_modules/react/index.js",
-    "node_modules/lodash/lib.js",
+    "src/components/Button.tsx",
+    "src/utils/helper.ts",
+    "build/output.js",
   ];
-  const exclude = globToRegExp("node_modules/**");
-  const result = excludePaths(paths, exclude);
+  const result = excludePaths(paths, "build");
+  assertEquals(result, ["src/components/Button.tsx", "src/utils/helper.ts"]);
+});
 
+Deno.test("excludePaths - handles glob patterns with wildcards", () => {
+  const paths = ["test1.spec.ts", "test2.spec.ts", "main.ts", "helper.ts"];
+  const result = excludePaths(paths, "*.spec.ts");
+  assertEquals(result, ["main.ts", "helper.ts"]);
+});
+
+Deno.test("excludePaths - returns empty array when all paths match", () => {
+  const paths = ["public/index.html", "public/style.css"];
+  const result = excludePaths(paths, "public");
   assertEquals(result, []);
 });
 
-Deno.test("excludePaths handles empty paths array", () => {
-  const paths: string[] = [];
-  const exclude = globToRegExp("**/*.tmp");
-  const result = excludePaths(paths, exclude);
+Deno.test("excludePaths - returns all paths when none match", () => {
+  const paths = ["src/index.ts", "lib/utils.ts"];
+  const result = excludePaths(paths, "dist");
+  assertEquals(result, ["src/index.ts", "lib/utils.ts"]);
+});
 
+Deno.test("excludePaths - handles empty paths array", () => {
+  const paths: string[] = [];
+  const result = excludePaths(paths, "public");
   assertEquals(result, []);
 });

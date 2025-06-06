@@ -1,34 +1,69 @@
 import { debounce } from "@std/async";
-import { globToRegExp } from "@std/path";
+import * as Path from "@std/path";
+
+export const pathMatchesPattern = (
+  path: string,
+  pathOrGlob: string,
+): boolean => {
+  // If it's a glob, match path against it
+  if (Path.isGlob(pathOrGlob)) {
+    const regex = Path.globToRegExp(pathOrGlob);
+    return regex.test(path);
+  }
+  // If it's not a glob, check if path starts with it
+  return path.startsWith(pathOrGlob);
+};
 
 /** Exclude paths that match the given regular expression */
-export const excludePaths = (paths: string[], exclude: RegExp): string[] =>
-  paths.filter((p) => !exclude.test(p));
+export const excludePaths = (paths: string[], exclude: string): string[] =>
+  paths.filter((p) => !pathMatchesPattern(p, exclude));
 
-/** Watch paths for changes, calling a callback on change.
- * @param path - The file or directory path to watch for changes
- * @param exclude - A glob pattern string to exclude matching paths from triggering the callback
- * @param callback - Function to call when changes are detected to non-excluded paths
- * @returns A function to close the watcher
+/**
+ * Watch paths for changes, calling a callback on change.
+ * *
+ * @param options - Configuration object for the watcher
+ * @param options.watch - Path to watch for changes (defaults to ".")
+ * @param options.exclude - Path  or glob to exclude from watching (defaults to "public")
+ * @param options.build - Callback function to execute when changes are detected
+ * @returns A function that can be called to stop watching and close the watcher
+ *
+ * @example
+ * ```ts
+ * const cancel = watch({
+ *   watch: ".",
+ *   exclude: "public",
+ *   build: () => console.log("Building...")
+ * });
+ *
+ * // Later, to stop watching:
+ * cancel();
+ * ```
  */
-export const watch = (
-  path: string,
-  exclude: string,
-  callback: () => unknown,
-): () => void => {
-  const watcher = Deno.watchFs(path);
-  const debouncedCallback = debounce(callback, 100);
-  const excludeRegex = globToRegExp(exclude);
+export const watch = ({
+  watch = ".",
+  exclude = "public",
+  build,
+}: {
+  watch?: string;
+  exclude?: string;
+  build: () => void;
+}): () => void => {
+  const watcher = Deno.watchFs(watch);
 
-  const watch = async () => {
+  const rebuild = debounce(build, 200);
+
+  const task = async () => {
+    const cwd = Deno.cwd();
     for await (const event of watcher) {
-      const changed = excludePaths(event.paths, excludeRegex);
-      if (changed.length > 0) {
-        debouncedCallback();
+      const changed = event.paths.map((p) => Path.relative(cwd, p));
+      const watched = excludePaths(changed, exclude);
+      if (watched.length > 0) {
+        rebuild();
       }
     }
   };
-  watch();
+  task();
+  rebuild();
 
   return () => watcher.close();
 };
