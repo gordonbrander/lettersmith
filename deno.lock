@@ -5,6 +5,7 @@
     "jsr:@gordonb/pipe@0.1": "0.1.0",
     "jsr:@noble/hashes@^1.7.1": "1.7.1",
     "jsr:@std/assert@1": "1.0.13",
+    "jsr:@std/async@^1.0.13": "1.0.13",
     "jsr:@std/cli@^1.0.12": "1.0.12",
     "jsr:@std/datetime@~0.225.3": "0.225.5",
     "jsr:@std/encoding@^1.0.7": "1.0.7",
@@ -21,6 +22,7 @@
     "jsr:@std/streams@^1.0.9": "1.0.9",
     "jsr:@std/yaml@^1.0.7": "1.0.7",
     "jsr:@valibot/valibot@~0.42.1": "0.42.1",
+    "npm:@types/node@*": "22.15.15",
     "npm:commonmark@~0.31.2": "0.31.2",
     "npm:esbuild@~0.24.2": "0.24.2",
     "npm:liquidjs@^10.20.2": "10.20.2"
@@ -46,6 +48,9 @@
       "dependencies": [
         "jsr:@std/internal@^1.0.6"
       ]
+    },
+    "@std/async@1.0.13": {
+      "integrity": "1d76ca5d324aef249908f7f7fe0d39aaf53198e5420604a59ab5c035adc97c96"
     },
     "@std/cli@1.0.12": {
       "integrity": "e5cfb7814d189da174ecd7a34fbbd63f3513e24a1b307feb2fcd5da47a070d90"
@@ -244,6 +249,12 @@
       "os": ["win32"],
       "cpu": ["x64"]
     },
+    "@types/node@22.15.15": {
+      "integrity": "sha512-R5muMcZob3/Jjchn5LcO8jdKwSCbzqmPB6ruBxMcf9kbxtniZHP327s6C37iOfuw8mbKK3cAQa7sEl7afLrQ8A==",
+      "dependencies": [
+        "undici-types"
+      ]
+    },
     "commander@10.0.1": {
       "integrity": "sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug=="
     },
@@ -303,6 +314,9 @@
     },
     "minimist@1.2.8": {
       "integrity": "sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA=="
+    },
+    "undici-types@6.21.0": {
+      "integrity": "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="
     }
   },
   "redirects": {
@@ -350,6 +364,7 @@
       "jsr:@gordonb/pipe@0.1",
       "jsr:@noble/hashes@^1.7.1",
       "jsr:@std/assert@1",
+      "jsr:@std/async@^1.0.13",
       "jsr:@std/datetime@~0.225.3",
       "jsr:@std/fs@^1.0.11",
       "jsr:@std/http@^1.0.13",
