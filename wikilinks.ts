@@ -2,6 +2,7 @@ import { toSlug } from "./utils/slug.ts";
 import { type AwaitableIterable, map, mapAsync } from "@gordonb/generator";
 import { create as createDoc, type Doc } from "./doc.ts";
 import { basename, extname } from "@std/path";
+import { stem } from "./utils/path.ts";
 import * as Stub from "./stub.ts";
 
 const WIKILINK_REGEXP = /\[\[([^\]]+)\]\]/g;
@@ -62,8 +63,7 @@ export const findWikilinks = (content: string): Wikilink[] =>
  * Generate a wikilink slug for a path.
  * Sluggifies the basename of the path (without the extension).
  */
-export const toWikilinkSlug = (path: string): string =>
-  toSlug(basename(path, extname(path)));
+export const toWikilinkSlug = (path: string): string => toSlug(stem(path));
 
 /**
  * Compile an index of docs by wikilink slug.

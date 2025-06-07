@@ -1,5 +1,11 @@
 import { assertEquals } from "@std/assert";
-import { getAutoTemplateForPath, isIndexPath, setExtension } from "./path.ts";
+import {
+  getAutoTemplateForPath,
+  isIndexPath,
+  relativize,
+  setExtension,
+  stem,
+} from "./path.ts";
 
 // Test getting automatic template for root-level file
 Deno.test("getAutoTemplateForPath - Root file", () => {
@@ -62,4 +68,47 @@ Deno.test("isIndexPath - With nested index file", () => {
   const path = "blog/index.html";
   const result = isIndexPath(path);
   assertEquals(result, true);
+});
+
+// Test stem function
+Deno.test("stem - Basic file", () => {
+  const path = "test.md";
+  const result = stem(path);
+  assertEquals(result, "test");
+});
+
+// Test stem with no extension
+Deno.test("stem - No extension", () => {
+  const path = "test";
+  const result = stem(path);
+  assertEquals(result, "test");
+});
+
+// Test stem with nested path
+Deno.test("stem - Nested path", () => {
+  const path = "blog/post.md";
+  const result = stem(path);
+  assertEquals(result, "post");
+});
+
+// Test relativize function
+Deno.test("relativize - Basic path", () => {
+  const path = "test.md";
+  const result = relativize(path);
+  assertEquals(result, "test.md");
+});
+
+// Test relativize with nested path
+Deno.test("relativize - Nested path", () => {
+  const path = "blog/post.md";
+  const result = relativize(path);
+  assertEquals(result, "blog/post.md");
+});
+
+// Test relativize with absolute path
+Deno.test("relativize - Absolute path", () => {
+  const cwd = Deno.cwd();
+  const path = `${cwd}/test.md`;
+  const result = relativize(path);
+  assertEquals(result, "test.md");
 });
