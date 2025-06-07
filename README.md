@@ -93,9 +93,10 @@ type Doc = {
 ```
 
 To simplify typing for common fields, Docs distinguish between the open-ended
-frontmatter, kept in `meta`, and certain "blessed" fields, such as `title`,
-`summary`, `tags`, etc. Functions like `docs.meta` will take care of setting
-these fields with the values found in the frontmatter.
+frontmatter, kept in `meta`, and certain "blessed" fields that live at the top
+level of the doc (e.g. `title`, `summary`, `tags`, etc). Functions like
+`docs.meta` will take care of setting these fields with the values found in the
+frontmatter.
 
 ### Generators
 
