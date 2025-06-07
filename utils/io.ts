@@ -14,8 +14,30 @@ export const writeFileDeep = async (
   );
 };
 
-export const removeRecursive = async (
+/**
+ * Check if a path exists
+ * @see https://docs.deno.com/examples/checking_file_existence/
+ */
+export const exists = async (path: Path): Promise<boolean> => {
+  try {
+    await Deno.lstat(path);
+    return true;
+  } catch (err) {
+    if (!(err instanceof Deno.errors.NotFound)) {
+      throw err;
+    }
+    return false;
+  }
+};
+
+/**
+ * Remove a file or directory recursively.
+ * If resource does not exist, do nothing.
+ */
+export const clean = async (
   path: Path,
 ): Promise<void> => {
-  await Deno.remove(path, { recursive: true });
+  if (await exists(path)) {
+    await Deno.remove(path, { recursive: true });
+  }
 };

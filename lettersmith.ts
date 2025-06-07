@@ -1,4 +1,4 @@
-import { removeRecursive } from "./utils/io.ts";
+import { clean } from "./utils/io.ts";
 import { type AsyncCancel, createCancelGroup } from "./utils/cancel.ts";
 import { serve } from "./server.ts";
 import { watch } from "./watcher.ts";
@@ -46,7 +46,7 @@ export const lettersmith = ({
   const rebuild = async () => {
     const start = performance.now();
     if (shouldClean) {
-      await removeRecursive(output);
+      await clean(output);
     }
     await build(output);
     const end = performance.now();
