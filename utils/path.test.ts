@@ -2,6 +2,7 @@ import { assertEquals } from "@std/assert";
 import {
   getAutoTemplateForPath,
   isIndexPath,
+  nicePath,
   relativize,
   setExtension,
   stem,
@@ -111,4 +112,32 @@ Deno.test("relativize - Absolute path", () => {
   const path = `${cwd}/test.md`;
   const result = relativize(path);
   assertEquals(result, "test.md");
+});
+
+// Test nicePath with regular file
+Deno.test("nicePath - Regular file", () => {
+  const path = "blog/post.md";
+  const result = nicePath(path);
+  assertEquals(result, "blog/post/index.html");
+});
+
+// Test nicePath with index file
+Deno.test("nicePath - Index file", () => {
+  const path = "blog/index.md";
+  const result = nicePath(path);
+  assertEquals(result, "blog/index.html");
+});
+
+// Test nicePath with root-level file
+Deno.test("nicePath - Root level file", () => {
+  const path = "about.md";
+  const result = nicePath(path);
+  assertEquals(result, "about/index.html");
+});
+
+// Test nicePath with root-level index file
+Deno.test("nicePath - Root level index file", () => {
+  const path = "index.md";
+  const result = nicePath(path);
+  assertEquals(result, "index.html");
 });

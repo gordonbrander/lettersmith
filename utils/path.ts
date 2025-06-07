@@ -1,5 +1,6 @@
-import { basename, dirname, extname, relative } from "@std/path";
+import { basename, dirname, extname, join, relative } from "@std/path";
 import { expandGlob } from "@std/fs";
+import { toSlug } from "./slug.ts";
 
 export type Path = string;
 
@@ -29,6 +30,24 @@ export const stem = (path: Path): string => basename(path, extname(path));
 
 /** Is path an index file? */
 export const isIndexPath = (path: Path): boolean => stem(path) === "index";
+
+/**
+ * Generate a nice path
+ * @example
+ * nicePath("foo/bar.md"); // "foo/bar/index.html"
+ * nicePath("foo/bar/index.md"); // "foo/bar/index.html"
+ */
+export const nicePath = (path: Path): Path => {
+  // If path is an index file, return the directory with "index.html"
+  if (isIndexPath(path)) {
+    const dir = dirname(path);
+    return join(dir, "index.html");
+  }
+  // Otherwise, make filename directory name, and add index to end.
+  const dir = dirname(path);
+  const slug = toSlug(stem(path));
+  return join(dir, slug, "index.html");
+};
 
 /** Make path relative to working directory */
 export const relativize = (path: Path): Path => relative("./", path);
