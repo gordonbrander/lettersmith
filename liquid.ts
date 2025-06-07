@@ -57,17 +57,31 @@ export const renderLiquidDoc = async (
     : fullDefaultTemplatePath;
 
   const templateString = await Deno.readTextFile(chosenTemplate);
-  const content = await renderLiquid(templateString, {
+
+  // First render any liquid in the doc's content field
+  const renderedDocContent = await renderLiquid(doc.content, {
+    context: {
+      ...context,
+      ...doc,
+      // Overwrite doc content to prevent recursion
+      content: undefined,
+    },
+  });
+
+  // Then render the template with the doc as context
+  const renderedTemplateContent = await renderLiquid(templateString, {
     root,
     context: {
       ...context,
       ...doc,
+      // Overwrite doc content with rendered doc content
+      content: renderedDocContent,
     },
   });
 
   return createDoc({
     ...doc,
-    content,
+    content: renderedTemplateContent,
   });
 };
 

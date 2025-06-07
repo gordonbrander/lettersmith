@@ -3,7 +3,7 @@
   "version": "0.0.16",
   "license": "MIT",
   "tasks": {
-    "test": "deno test --allow-read --allow-env --allow-run"
+    "test": "deno test --allow-read --allow-write --allow-env --allow-run"
   },
   "imports": {
     "@gordonb/generator": "jsr:@gordonb/generator@^0.3.0",
