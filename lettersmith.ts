@@ -27,23 +27,27 @@ export const args = (): LettersmithArgs =>
 
 /**
  * Entrypoint for your lettersmith application.
- * Handles building, serving, and watching for file changes.
+ * Handles serving, and watching for file changes.
  */
 export const lettersmith = ({
   build,
   output = "public",
   watch: shouldWatch = false,
   serve: shouldServe = false,
+  clean: shouldClean = true,
 }: {
   build: (output: string) => Promise<void>;
   output?: string;
   watch?: boolean;
   serve?: boolean;
+  clean?: boolean;
 }): AsyncCancel => {
   // Wrap up build step
   const rebuild = async () => {
     const start = performance.now();
-    await removeRecursive(output);
+    if (shouldClean) {
+      await removeRecursive(output);
+    }
     await build(output);
     const end = performance.now();
     console.log(`Built! ${end - start}ms`);
