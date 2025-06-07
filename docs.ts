@@ -12,21 +12,21 @@ import {
 } from "@gordonb/generator";
 import { join as joinPath } from "@std/path/join";
 
+/** Read documents from paths */
 export const read = (
   paths: AwaitableIterable<string>,
 ): AsyncGenerator<Doc> => mapAsync(paths, (path) => doc.read(path));
 
+/** Read documents matching glob pattern */
 export const readMatching = (
   glob: string,
 ): AsyncGenerator<Doc> => pipe(glob, globPaths, read);
 
 /**
- * Create a build function that supports passing multiple doc iterables as varargs.
- * Returned build function allows passing multiple sync or async iterables of docs as varargs.
- * Logs receipts to stdout for each doc written to file system.
+ * Write documents to file system.
+ * Logs to stdout for each doc written to file system.
  * @example
- * const write = build("public");
- * await write(docsA, docsB, docsC);
+ * await build("public", docsA, docsB, docsC);
  * console.log("Built everything!");
  */
 export const build = async (
@@ -37,7 +37,7 @@ export const build = async (
     try {
       const { id, output } = await doc.write(d, dir);
       const fullOutputPath = joinPath(dir, output);
-      console.log("Wrote", `${id} -> ${fullOutputPath}`);
+      console.log(`${fullOutputPath} <- ${id}`);
     } catch (error) {
       throw new Error(`Failed to build doc ${d.id}`, { cause: error });
     }
@@ -62,6 +62,7 @@ export const removeIndex = (
 export const dedupeById = (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
   dedupeAsync(docs, (d) => d.id);
 
+/** Auto-generate a summary property if summary is empty */
 export const autoSummary = (
   docs: AwaitableIterable<Doc>,
 ): AsyncGenerator<Doc> => mapAsync(docs, doc.autoSummary);
@@ -74,12 +75,28 @@ export const setExtension =
   (ext: string) => (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
     mapAsync(docs, (d) => doc.setExtension(d, ext));
 
+/** Parse YAML frontmatter */
 export const parseFrontmatter = (
   docs: AwaitableIterable<Doc>,
 ): AsyncGenerator<Doc> => mapAsync(docs, doc.parseFrontmatter);
 
+/** Uplift metadata, copying properties from the frontmatter onto blessed fields of the doc. */
 export const upliftMeta = (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
   mapAsync(docs, doc.upliftMeta);
+
+/** Parse and set up doc metadata:
+ * - Parse YAML frontmatter
+ * - Uplift "blessed" frontmatter fields, such as summary to corresponding fields on the doc
+ * - Auto-generate a summary property if summary is empty
+ * - Auto-assign a template property if template is empty
+ */
+export const meta = (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
+  pipe(
+    docs,
+    parseFrontmatter,
+    upliftMeta,
+    autoTemplate,
+  );
 
 /**
  * Sort docs using a compare function.
