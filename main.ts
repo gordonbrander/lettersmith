@@ -20,5 +20,6 @@ export * as date from "./utils/date.ts";
 export * as slug from "./utils/slug.ts";
 export * as wikilinks from "./wikilinks.ts";
 export * as frontmatter from "./utils/frontmatter.ts";
+export * as stub from "./stub.ts";
 export { pipe, pipeAsync } from "@gordonb/pipe";
 export * as generator from "@gordonb/generator";
