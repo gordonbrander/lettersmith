@@ -38,7 +38,7 @@ export const relativize = (path: Path): Path => relative("./", path);
  * Paths are relative to current working directory.
  * @returns an async iterable for path
  */
-export async function* globPaths(glob: string): AsyncIterable<Path> {
+export async function* globPaths(glob: string): AsyncGenerator<Path> {
   for await (const { path } of expandGlob(glob)) {
     yield relativize(path);
   }
