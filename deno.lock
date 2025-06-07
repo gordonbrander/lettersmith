@@ -8,6 +8,7 @@
     "jsr:@std/assert@1": "1.0.13",
     "jsr:@std/async@^1.0.13": "1.0.13",
     "jsr:@std/cli@^1.0.12": "1.0.12",
+    "jsr:@std/cli@^1.0.19": "1.0.19",
     "jsr:@std/datetime@~0.225.3": "0.225.5",
     "jsr:@std/encoding@^1.0.7": "1.0.7",
     "jsr:@std/fmt@^1.0.5": "1.0.5",
@@ -59,6 +60,9 @@
     "@std/cli@1.0.12": {
       "integrity": "e5cfb7814d189da174ecd7a34fbbd63f3513e24a1b307feb2fcd5da47a070d90"
     },
+    "@std/cli@1.0.19": {
+      "integrity": "b3601a54891f89f3f738023af11960c4e6f7a45dc76cde39a6861124cba79e88"
+    },
     "@std/datetime@0.225.3": {
       "integrity": "fda0b7791b43d9a46764986fec39922a8ceb70ffca642651fa7d0683501a171a"
     },
@@ -89,7 +93,7 @@
     "@std/http@1.0.13": {
       "integrity": "d29618b982f7ae44380111f7e5b43da59b15db64101198bb5f77100d44eb1e1e",
       "dependencies": [
-        "jsr:@std/cli",
+        "jsr:@std/cli@^1.0.12",
         "jsr:@std/encoding",
         "jsr:@std/fmt",
         "jsr:@std/html",
@@ -370,6 +374,7 @@
       "jsr:@noble/hashes@^1.7.1",
       "jsr:@std/assert@1",
       "jsr:@std/async@^1.0.13",
+      "jsr:@std/cli@^1.0.19",
       "jsr:@std/datetime@~0.225.3",
       "jsr:@std/fs@^1.0.11",
       "jsr:@std/http@^1.0.13",
