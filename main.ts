@@ -1,4 +1,4 @@
-export { lettersmith } from "./lettersmith.ts";
+export { args, lettersmith } from "./lettersmith.ts";
 export * as doc from "./doc.ts";
 export * as docs from "./docs.ts";
 export * as markdown from "./markdown.ts";
