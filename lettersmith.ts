@@ -50,7 +50,7 @@ export const lettersmith = ({
     }
     await build(output);
     const end = performance.now();
-    console.log(`Built! ${end - start}ms`);
+    console.log(`🔥 Built! ${end - start}ms 🔥`);
   };
 
   const cancels = createCancelGroup();
