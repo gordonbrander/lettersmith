@@ -1,7 +1,6 @@
 import { toSlug } from "./utils/slug.ts";
 import { type AwaitableIterable, map, mapAsync } from "@gordonb/generator";
 import { create as createDoc, type Doc } from "./doc.ts";
-import { basename, extname } from "@std/path";
 import { stem } from "./utils/path.ts";
 import * as Stub from "./stub.ts";
 
