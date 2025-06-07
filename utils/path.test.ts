@@ -3,6 +3,7 @@ import {
   getAutoTemplateForPath,
   isIndexPath,
   nicePath,
+  niceStem,
   relativize,
   setExtension,
   stem,
@@ -112,6 +113,55 @@ Deno.test("relativize - Absolute path", () => {
   const path = `${cwd}/test.md`;
   const result = relativize(path);
   assertEquals(result, "test.md");
+});
+
+// Test niceStem with regular file
+Deno.test("niceStem - Regular file", () => {
+  const path = "post.md";
+  const result = niceStem(path);
+  assertEquals(result, "post/index.html");
+});
+
+// Test niceStem with index file
+Deno.test("niceStem - Index file", () => {
+  const path = "index.md";
+  const result = niceStem(path);
+  assertEquals(result, "index.html");
+});
+
+// Test niceStem with nested regular file
+Deno.test("niceStem - Nested regular file", () => {
+  const path = "blog/post.md";
+  const result = niceStem(path);
+  assertEquals(result, "post/index.html");
+});
+
+// Test niceStem with nested index file
+Deno.test("niceStem - Nested index file", () => {
+  const path = "blog/index.md";
+  const result = niceStem(path);
+  assertEquals(result, "index.html");
+});
+
+// Test niceStem with deeply nested regular file
+Deno.test("niceStem - Deeply nested regular file", () => {
+  const path = "sections/blog/post.md";
+  const result = niceStem(path);
+  assertEquals(result, "post/index.html");
+});
+
+// Test niceStem with deeply nested index file
+Deno.test("niceStem - Deeply nested index file", () => {
+  const path = "sections/blog/index.md";
+  const result = niceStem(path);
+  assertEquals(result, "index.html");
+});
+
+// Test niceStem with deeply nested index file
+Deno.test("niceStem - sluggifies the path", () => {
+  const path = "The Quick Brown Fox.md";
+  const result = niceStem(path);
+  assertEquals(result, "the-quick-brown-fox/index.html");
 });
 
 // Test nicePath with regular file

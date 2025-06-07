@@ -1,6 +1,6 @@
 import { create as createDoc, type Doc } from "./doc.ts";
 import { type AwaitableIterable, mapAsync } from "@gordonb/generator";
-import { nicePath, type Path, stem } from "./utils/path.ts";
+import { niceStem, type Path, stem } from "./utils/path.ts";
 import { dirname } from "@std/path/dirname";
 import { toSlug } from "./utils/slug.ts";
 import { dd, mm, yyyy } from "./utils/date.ts";
@@ -21,7 +21,7 @@ const readPermalinkProps = (doc: Doc): PermalinkProps => ({
   title: doc.title,
   outputPath: doc.outputPath,
   slug: toSlug(stem(doc.outputPath)),
-  nice: nicePath(doc.outputPath),
+  nice: niceStem(doc.outputPath),
   yyyy: yyyy(doc.created),
   mm: mm(doc.created),
   dd: dd(doc.created),

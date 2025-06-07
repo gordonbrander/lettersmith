@@ -32,21 +32,31 @@ export const stem = (path: Path): string => basename(path, extname(path));
 export const isIndexPath = (path: Path): boolean => stem(path) === "index";
 
 /**
+ * Generate a nice stem for a path
+ * @example
+ * niceStem("bar.md"); // "bar/index.html"
+ * niceStem("foo/bar.md"); // "bar/index.html"
+ * niceStem("foo/bar/index.md"); // "bar/index.html"
+ */
+export const niceStem = (path: Path): string => {
+  // If path is an index file, return "index.html"
+  if (isIndexPath(path)) {
+    return "index.html";
+  }
+  // Otherwise join the slugified stem with "index.html"
+  return join(toSlug(stem(path)), "index.html");
+};
+
+/**
  * Generate a nice path
  * @example
  * nicePath("foo/bar.md"); // "foo/bar/index.html"
  * nicePath("foo/bar/index.md"); // "foo/bar/index.html"
  */
 export const nicePath = (path: Path): Path => {
-  // If path is an index file, return the directory with "index.html"
-  if (isIndexPath(path)) {
-    const dir = dirname(path);
-    return join(dir, "index.html");
-  }
-  // Otherwise, make filename directory name, and add index to end.
   const dir = dirname(path);
-  const slug = toSlug(stem(path));
-  return join(dir, slug, "index.html");
+  // Otherwise, make filename directory name, and add index to end.
+  return join(dir, niceStem(path));
 };
 
 /** Make path relative to working directory */
