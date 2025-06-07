@@ -4,7 +4,7 @@ import type { Timestamp } from "./utils/date.ts";
 import type { Tags } from "./utils/tags.ts";
 import type { Doc, Meta } from "./doc.ts";
 
-/** A document stub. Contains basic information about a document. */
+/** A document stub. Contains basic information about a document, without the content. */
 export type Stub = {
   id: Path;
   outputPath: Path;
