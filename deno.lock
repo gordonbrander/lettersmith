@@ -1,7 +1,7 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@gordonb/generator@0.1": "0.1.0",
+    "jsr:@gordonb/generator@0.2": "0.2.0",
     "jsr:@gordonb/pipe@0.1": "0.1.0",
     "jsr:@gordonb/result@0.2": "0.2.0",
     "jsr:@noble/hashes@^1.7.1": "1.7.1",
@@ -30,8 +30,8 @@
     "npm:liquidjs@^10.20.2": "10.20.2"
   },
   "jsr": {
-    "@gordonb/generator@0.1.0": {
-      "integrity": "eac65b48c7227f111cb799325faa0753b05bd4c91148198713bad52a388b7f57"
+    "@gordonb/generator@0.2.0": {
+      "integrity": "d874bbe05c31597ca68e3e60c55117932143046d5fe90c1ef2548f085c18328d"
     },
     "@gordonb/pipe@0.1.0": {
       "integrity": "aca3160a31091720b858d05bef3ecca0c7230cefaeff24ca41fe0b497247e74d"
@@ -368,7 +368,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@gordonb/generator@0.1",
+      "jsr:@gordonb/generator@0.2",
       "jsr:@gordonb/pipe@0.1",
       "jsr:@gordonb/result@0.2",
       "jsr:@noble/hashes@^1.7.1",
