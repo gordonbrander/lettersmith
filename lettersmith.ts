@@ -1,5 +1,3 @@
-import type { Doc } from "./doc.ts";
-import * as Docs from "./docs.ts";
 import { removeRecursive } from "./utils/io.ts";
 import { type AsyncCancel, createCancelGroup } from "./utils/cancel.ts";
 import { serve } from "./server.ts";
@@ -32,12 +30,12 @@ export const args = (): LettersmithArgs =>
  * Handles building, serving, and watching for file changes.
  */
 export const lettersmith = ({
-  docs,
+  build,
   output = "public",
   watch: shouldWatch = false,
   serve: shouldServe = false,
 }: {
-  docs: () => AsyncIterable<Doc>;
+  build: (output: string) => Promise<void>;
   output?: string;
   watch?: boolean;
   serve?: boolean;
@@ -45,10 +43,8 @@ export const lettersmith = ({
   // Wrap up build step
   const rebuild = async () => {
     const start = performance.now();
-    // Clean
     await removeRecursive(output);
-    // Build
-    await Docs.build(output, docs());
+    await build(output);
     const end = performance.now();
     console.log(`Built! ${end - start}ms`);
   };
