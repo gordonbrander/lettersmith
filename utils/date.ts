@@ -1,5 +1,6 @@
 import { isString } from "./check.ts";
 import { format } from "@std/datetime";
+import type { Option } from "@gordonb/result/option";
 
 export type Timestamp = number;
 
@@ -7,10 +8,10 @@ export type Timestamp = number;
  * Parse date string to Date
  * @returns Option of number representing milliseconds since epoch
  */
-export const parseTimestamp = (dateString: string): number | null => {
+export const parseTimestamp = (dateString: string): Option<number> => {
   const timestamp = Date.parse(dateString);
   if (isNaN(timestamp)) {
-    return null;
+    return;
   }
   return timestamp;
 };
@@ -22,7 +23,7 @@ export const getTimestamp = (date: Date): number => date.getTime();
  * @arg `datelike` can be a Date or parseable date string
  * @returns Option of number representing milliseconds since epoch
  */
-export const readTimestamp = (datelike: Date | string): number | null => {
+export const readTimestamp = (datelike: Date | string): Option<number> => {
   if (isString(datelike)) {
     return parseTimestamp(datelike);
   } else {

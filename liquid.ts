@@ -1,7 +1,7 @@
 import { Liquid } from "liquidjs";
 import { create as createDoc, type Doc } from "./doc.ts";
 import { type AwaitableIterable, mapAsync } from "@gordonb/generator";
-import { isNone } from "./utils/option.ts";
+import { isNone } from "@gordonb/result/option";
 import type { Path } from "./utils/path.ts";
 import { join as joinPath } from "@std/path";
 import { exists } from "@std/fs";

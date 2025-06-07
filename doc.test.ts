@@ -14,7 +14,7 @@ Deno.test("Doc create() with minimal args", () => {
   const doc = create({ id: "test.md" });
   assertEquals(doc.id, "test.md");
   assertEquals(doc.outputPath, "test.md");
-  assertEquals(doc.templatePath, null);
+  assertEquals(doc.templatePath, undefined);
   assertEquals(doc.title, "");
   assertEquals(doc.summary, "");
   assertEquals(doc.content, "");

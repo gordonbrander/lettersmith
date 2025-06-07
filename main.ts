@@ -9,7 +9,7 @@ export * as watcher from "./watcher.ts";
 export * as rss from "./rss.ts";
 export * as sitemap from "./sitemap.ts";
 export { copy } from "./utils/copy.ts";
-export * as option from "./utils/option.ts";
+export * as option from "@gordonb/result/option";
 export * as io from "./utils/io.ts";
 export * as html from "./utils/html.ts";
 export * as json from "./utils/json.ts";

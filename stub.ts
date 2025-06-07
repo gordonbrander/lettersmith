@@ -1,5 +1,5 @@
 import type { Path } from "./utils/path.ts";
-import type { Option } from "./utils/option.ts";
+import type { Option } from "@gordonb/result/option";
 import type { Timestamp } from "./utils/date.ts";
 import type { Tags } from "./utils/tags.ts";
 import type { Doc, Meta } from "./doc.ts";

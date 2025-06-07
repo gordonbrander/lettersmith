@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@gordonb/generator@0.1": "0.1.0",
     "jsr:@gordonb/pipe@0.1": "0.1.0",
+    "jsr:@gordonb/result@0.2": "0.2.0",
     "jsr:@noble/hashes@^1.7.1": "1.7.1",
     "jsr:@std/assert@1": "1.0.13",
     "jsr:@std/async@^1.0.13": "1.0.13",
@@ -33,6 +34,9 @@
     },
     "@gordonb/pipe@0.1.0": {
       "integrity": "aca3160a31091720b858d05bef3ecca0c7230cefaeff24ca41fe0b497247e74d"
+    },
+    "@gordonb/result@0.2.0": {
+      "integrity": "acfe7019b414a4ac6d38a7353c4cc789b27d3313bb22de278d68a9b166a51eeb"
     },
     "@noble/hashes@1.7.1": {
       "integrity": "2c29f1dc07943155f5c7384be6f570a749c2afee95a0557cdae02b4fd5956134"
@@ -362,6 +366,7 @@
     "dependencies": [
       "jsr:@gordonb/generator@0.1",
       "jsr:@gordonb/pipe@0.1",
+      "jsr:@gordonb/result@0.2",
       "jsr:@noble/hashes@^1.7.1",
       "jsr:@std/assert@1",
       "jsr:@std/async@^1.0.13",

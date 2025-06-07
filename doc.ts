@@ -1,5 +1,5 @@
 import { writeFileDeep } from "./utils/io.ts";
-import { isNone, type Option } from "./utils/option.ts";
+import { isNone, isSome, type Option } from "@gordonb/result/option";
 import { join as joinPath } from "@std/path";
 import { truncate280 } from "./utils/text.ts";
 import {
@@ -9,7 +9,6 @@ import {
 } from "./utils/path.ts";
 import { readTimestamp, type Timestamp } from "./utils/date.ts";
 import { parseFrontmatter as parseFrontmatterInText } from "./utils/frontmatter.ts";
-import { isSome } from "./utils/option.ts";
 import { isDate, isString } from "./utils/check.ts";
 import { stripTags } from "./utils/html.ts";
 import { pipe } from "@gordonb/pipe";
@@ -35,7 +34,7 @@ export const create = (
   {
     id,
     outputPath = id,
-    templatePath = null,
+    templatePath = undefined,
     created = Date.now(),
     modified = Date.now(),
     title = "",
