@@ -2,6 +2,7 @@ import { assert, assertEquals } from "@std/assert";
 import {
   autoSummary,
   autoTemplate,
+  autoTitle,
   copy,
   create,
   setExtension,
@@ -71,6 +72,12 @@ Deno.test("setTitleIfEmpty() sets the title only if empty", () => {
 
   assertEquals(updated1.title, "New Title");
   assertEquals(updated2.title, "Existing");
+});
+
+Deno.test("Doc autoTitle()", () => {
+  const doc = create({ id: "test.md" });
+  const titled = autoTitle(doc);
+  assertEquals(titled.title, "test");
 });
 
 Deno.test("setSummaryIfEmpty() sets the summary only if empty", () => {

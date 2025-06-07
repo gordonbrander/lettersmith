@@ -62,6 +62,11 @@ export const removeIndex = (
 export const dedupeById = (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> =>
   dedupeAsync(docs, (d) => d.id);
 
+/** Auto-generate a title from filename if title is empty */
+export const autoTitle = (
+  docs: AwaitableIterable<Doc>,
+): AsyncGenerator<Doc> => mapAsync(docs, doc.autoTitle);
+
 /** Auto-generate a summary property if summary is empty */
 export const autoSummary = (
   docs: AwaitableIterable<Doc>,

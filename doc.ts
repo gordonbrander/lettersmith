@@ -6,6 +6,7 @@ import {
   getAutoTemplateForPath,
   type Path,
   setExtension as setPathExtension,
+  stem,
 } from "./utils/path.ts";
 import { readTimestamp, type Timestamp } from "./utils/date.ts";
 import { parseFrontmatter as parseFrontmatterInText } from "./utils/frontmatter.ts";
@@ -112,6 +113,12 @@ export const setTitleIfEmpty = (doc: Doc, title: string): Doc => {
     title,
   });
 };
+
+/**
+ * Automatically assign a title to the doc if it doesn't already have one.
+ * Title is taken from the original file stem (the basename without extension)
+ */
+export const autoTitle = (doc: Doc): Doc => setTitleIfEmpty(doc, stem(doc.id));
 
 /** Set doc summary if doc doesn't already have a summary. */
 export const setSummaryIfEmpty = (doc: Doc, summary: string): Doc => {
