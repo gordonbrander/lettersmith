@@ -51,14 +51,14 @@ export const createRssDoc = async (docs: AwaitableIterable<Doc>, {
   title,
   description = "",
   author = "",
-  modified = Date.now(),
+  modified = new Date(),
 }: {
   outputPath: string;
   url: string;
   title: string;
   description?: string;
   author?: string;
-  modified?: number;
+  modified?: Date;
 }): Promise<Doc> => {
   const recentDocs = await Array.fromAsync(recent(docs, 24));
 
@@ -100,14 +100,14 @@ export const rss = ({
   title,
   description = "",
   author = "",
-  modified = Date.now(),
+  modified = new Date(),
 }: {
   outputPath: string;
   url: string;
   title: string;
   description?: string;
   author?: string;
-  modified?: number;
+  modified?: Date;
 }) =>
   async function* (docs: AwaitableIterable<Doc>): AsyncGenerator<Doc> {
     yield await createRssDoc(docs, {
