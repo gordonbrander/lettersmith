@@ -74,10 +74,16 @@ export const create = (
  */
 export const read = async (path: Path): Promise<Doc> => {
   const content = await Deno.readTextFile(path);
+  const stats = await Deno.stat(path);
+  const created = stats.birthtime?.getTime() ?? stats.mtime?.getTime() ??
+    Date.now();
+  const modified = stats.mtime?.getTime() ?? Date.now();
   return create({
     id: path,
     outputPath: path,
     content,
+    created,
+    modified,
   });
 };
 
