@@ -1,6 +1,11 @@
 import { create as createDoc, type Doc } from "./doc.ts";
-import { type AwaitableIterable, takeAsync } from "@gordonb/generator";
+import {
+  type AwaitableIterable,
+  mapAsync,
+  takeAsync,
+} from "@gordonb/generator";
 import { renderLiquid } from "./liquid.ts";
+import * as Stub from "./stub.ts";
 
 const SITEMAP_TEMPLATE = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -19,11 +24,12 @@ export const createSitemapDoc = async (
 ): Promise<Doc> => {
   const outputPath = "sitemap.xml";
   const created = new Date();
-  const docs50k = await Array.fromAsync(takeAsync(docs, 50000));
+  const stubs = mapAsync(docs, Stub.fromDoc);
+  const stubs50k = await Array.fromAsync(takeAsync(stubs, 50000));
 
   const content = await renderLiquid(SITEMAP_TEMPLATE, {
     context: {
-      sitemap: docs50k,
+      sitemap: stubs50k,
       site: {
         url,
       },
