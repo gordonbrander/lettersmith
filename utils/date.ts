@@ -14,19 +14,10 @@ export const parseDatelike = (datelike: unknown): Option<Date> => {
 };
 
 /** Get the four-digit year */
-export const yyyy = (timestamp: number): string => {
-  const date = new Date(timestamp);
-  return format(date, "yyyy");
-};
+export const yyyy = (date: Date): string => format(date, "yyyy");
 
 /** Get the two-digit month */
-export const mm = (timestamp: number): string => {
-  const date = new Date(timestamp);
-  return format(date, "MM");
-};
+export const mm = (date: Date): string => format(date, "MM");
 
 /** Get the two-digit day */
-export const dd = (timestamp: number): string => {
-  const date = new Date(timestamp);
-  return format(date, "dd");
-};
+export const dd = (date: Date): string => format(date, "dd");

@@ -32,31 +32,31 @@ Deno.test("parseDatelike", async (t) => {
 
 Deno.test("yyyy", async (t) => {
   await t.step("it formats four-digit year from timestamp", () => {
-    const timestamp = new Date(2020, 0, 1).getTime();
-    assertEquals(yyyy(timestamp), "2020");
+    const date = new Date(2020, 0, 1);
+    assertEquals(yyyy(date), "2020");
   });
 });
 
 Deno.test("mm", async (t) => {
   await t.step("it formats two-digit month from timestamp", () => {
-    const timestamp = new Date(2020, 0, 1).getTime();
-    assertEquals(mm(timestamp), "01");
+    const date = new Date(2020, 0, 1);
+    assertEquals(mm(date), "01");
   });
 
   await t.step("it zero-pads single digit months", () => {
-    const timestamp = new Date(2020, 8, 1).getTime();
-    assertEquals(mm(timestamp), "09");
+    const date = new Date(2020, 8, 1);
+    assertEquals(mm(date), "09");
   });
 });
 
 Deno.test("dd", async (t) => {
   await t.step("it formats two-digit day from timestamp", () => {
-    const timestamp = new Date(2020, 0, 1).getTime();
-    assertEquals(dd(timestamp), "01");
+    const date = new Date(2020, 0, 1);
+    assertEquals(dd(date), "01");
   });
 
   await t.step("it zero-pads single digit days", () => {
-    const timestamp = new Date(2020, 0, 5).getTime();
-    assertEquals(dd(timestamp), "05");
+    const date = new Date(2020, 0, 5);
+    assertEquals(dd(date), "05");
   });
 });
