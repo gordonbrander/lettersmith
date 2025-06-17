@@ -82,8 +82,8 @@ type Doc = {
   id: string; // Source file path
   outputPath: string; // Where to write the file
   templatePath: string; // Template to use for rendering
-  created: number; // Creation timestamp
-  modified: number; // Modification timestamp
+  created: Date; // Creation timestamp
+  modified: Date; // Modification timestamp
   title: string; // Document title
   summary: string; // Document summary/excerpt
   content: string; // Document content
