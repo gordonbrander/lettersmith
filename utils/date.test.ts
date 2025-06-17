@@ -1,30 +1,9 @@
 import { assert, assertEquals } from "@std/assert";
-import { dd, mm, parseTimestamp, readTimestamp, yyyy } from "./date.ts";
+import { dd, mm, parseDatelike, yyyy } from "./date.ts";
 
-Deno.test("parseTimestamp", async (t) => {
-  await t.step("it returns Date for valid date string", () => {
-    const result = parseTimestamp("2020-01-01T15:17:19");
-    assert(result !== undefined);
-    const date = new Date(result);
-    assertEquals(date?.getFullYear(), 2020, "year");
-    assertEquals(date?.getMonth(), 0, "month");
-    assertEquals(date?.getDate(), 1, "day");
-  });
-
-  await t.step("it returns null for invalid date string", () => {
-    const result = parseTimestamp("not a date");
-    assertEquals(result, undefined);
-  });
-
-  await t.step("it returns null for empty string", () => {
-    const result = parseTimestamp("");
-    assertEquals(result, undefined);
-  });
-});
-
-Deno.test("readTimestamp", async (t) => {
-  await t.step("it reads timestamp from string date", () => {
-    const result = readTimestamp("2020-01-01T15:17:19");
+Deno.test("parseDatelike", async (t) => {
+  await t.step("it reads date from string date", () => {
+    const result = parseDatelike("2020-01-01T15:17:19");
     assert(result !== undefined);
     const date = new Date(result);
     assertEquals(date?.getFullYear(), 2020);
@@ -32,9 +11,9 @@ Deno.test("readTimestamp", async (t) => {
     assertEquals(date?.getDate(), 1);
   });
 
-  await t.step("it reads timestamp from Date object", () => {
+  await t.step("it reads date from Date object", () => {
     const testDate = new Date(2020, 0, 1, 15, 17, 19);
-    const result = readTimestamp(testDate);
+    const result = parseDatelike(testDate);
     assert(result !== undefined);
     const date = new Date(result);
     assertEquals(date?.getFullYear(), 2020);
@@ -42,15 +21,13 @@ Deno.test("readTimestamp", async (t) => {
     assertEquals(date?.getDate(), 1);
   });
 
-  await t.step("it returns null for invalid date string", () => {
-    const result = readTimestamp("not a date");
-    assertEquals(result, undefined);
-  });
-
-  await t.step("it returns null for empty string", () => {
-    const result = readTimestamp("");
-    assertEquals(result, undefined);
-  });
+  await t.step(
+    "it returns undefined for non-string, non-number, non-date values",
+    () => {
+      const result = parseDatelike({});
+      assertEquals(result, undefined);
+    },
+  );
 });
 
 Deno.test("yyyy", async (t) => {

@@ -18,7 +18,7 @@ export const createSitemapDoc = async (
   url: string,
 ): Promise<Doc> => {
   const outputPath = "sitemap.xml";
-  const created = Date.now();
+  const created = new Date();
   const docs50k = await Array.fromAsync(takeAsync(docs, 50000));
 
   const content = await renderLiquid(SITEMAP_TEMPLATE, {

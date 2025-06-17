@@ -23,8 +23,8 @@ Deno.test("Doc create() with minimal args", () => {
 });
 
 Deno.test("Doc create() with all args", () => {
-  const created = Date.now();
-  const modified = Date.now();
+  const created = new Date();
+  const modified = new Date();
   const doc = create({
     id: "test.md",
     outputPath: "test.html",

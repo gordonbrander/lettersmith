@@ -10,7 +10,7 @@ import { isString } from "./utils/check.ts";
 export type Filter = FilterImplOptions;
 
 /** Implement filter for joining root URL to path */
-const filterPermalink = (path: unknown, root: unknown): string => {
+export const filterPermalink = (path: unknown, root: unknown): string => {
   // Don't permalink non-string values
   if (!isString(path) || !isString(root)) {
     return path as string;

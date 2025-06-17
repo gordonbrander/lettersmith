@@ -8,12 +8,12 @@ import {
   setExtension as setPathExtension,
   stem,
 } from "./utils/path.ts";
-import { readTimestamp, type Timestamp } from "./utils/date.ts";
 import { parseFrontmatter as parseFrontmatterInText } from "./utils/frontmatter.ts";
-import { isDate, isString } from "./utils/check.ts";
+import { isString } from "./utils/check.ts";
 import { stripTags } from "./utils/html.ts";
 import { pipe } from "@gordonb/pipe";
 import { isTags, type Tags } from "./utils/tags.ts";
+import { parseDatelike } from "./utils/date.ts";
 
 export type Meta = Record<string, unknown>;
 
@@ -21,8 +21,8 @@ export type Doc = {
   id: Path;
   outputPath: Path;
   templatePath: Option<Path>;
-  created: Timestamp;
-  modified: Timestamp;
+  created: Date;
+  modified: Date;
   title: string;
   summary: string;
   content: string;
@@ -36,8 +36,8 @@ export const create = (
     id,
     outputPath = id,
     templatePath = undefined,
-    created = Date.now(),
-    modified = Date.now(),
+    created = new Date(),
+    modified = new Date(),
     title = "",
     summary = "",
     content = "",
@@ -47,8 +47,8 @@ export const create = (
     id: Path;
     outputPath?: Path;
     templatePath?: Option<Path>;
-    created?: Timestamp;
-    modified?: Timestamp;
+    created?: Date;
+    modified?: Date;
     title?: string;
     summary?: string;
     content?: string;
@@ -75,9 +75,8 @@ export const create = (
 export const read = async (path: Path): Promise<Doc> => {
   const content = await Deno.readTextFile(path);
   const stats = await Deno.stat(path);
-  const created = stats.birthtime?.getTime() ?? stats.mtime?.getTime() ??
-    Date.now();
-  const modified = stats.mtime?.getTime() ?? Date.now();
+  const created = stats.birthtime ?? stats.mtime ?? new Date();
+  const modified = stats.mtime ?? new Date();
   return create({
     id: path,
     outputPath: path,
@@ -194,18 +193,14 @@ export const upliftMeta = (doc: Doc): Doc => {
     draft.summary = doc.meta.summary;
   }
 
-  if (isString(doc.meta.created) || isDate(doc.meta.created)) {
-    const date = readTimestamp(doc.meta.created);
-    if (isSome(date)) {
-      draft.created = date;
-    }
+  const created = parseDatelike(doc.meta.created);
+  if (isSome(created)) {
+    draft.created = created;
   }
 
-  if (isString(doc.meta.modified) || isDate(doc.meta.modified)) {
-    const date = readTimestamp(doc.meta.modified);
-    if (isSome(date)) {
-      draft.modified = date;
-    }
+  const modified = parseDatelike(doc.meta.modified);
+  if (isSome(modified)) {
+    draft.modified = modified;
   }
 
   if (isTags(doc.meta.tags)) {

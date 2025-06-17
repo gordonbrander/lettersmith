@@ -8,15 +8,15 @@ Deno.test("createSitemapDoc creates sitemap", async () => {
       id: "test1",
       outputPath: "test1.html",
       content: "",
-      created: 0,
-      modified: 0,
+      created: new Date(0),
+      modified: new Date(0),
     }),
     createDoc({
       id: "test2",
       outputPath: "test2.html",
       content: "",
-      created: 0,
-      modified: 0,
+      created: new Date(0),
+      modified: new Date(0),
     }),
   ];
 

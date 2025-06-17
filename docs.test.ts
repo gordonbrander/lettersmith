@@ -7,15 +7,15 @@ Deno.test("recent", async (t) => {
     const docs = [
       doc.create({
         id: "1",
-        created: 1000,
+        created: new Date(1000),
       }),
       doc.create({
         id: "2",
-        created: 2000,
+        created: new Date(2000),
       }),
       doc.create({
         id: "3",
-        created: 3000,
+        created: new Date(3000),
       }),
     ];
 
@@ -31,7 +31,7 @@ Deno.test("recent", async (t) => {
     const docs = [
       doc.create({
         id: "1",
-        created: 1000,
+        created: new Date(1000),
       }),
     ];
 
@@ -46,7 +46,7 @@ Deno.test("recent", async (t) => {
       const docs = [
         doc.create({
           id: "1",
-          created: 1000,
+          created: new Date(1000),
         }),
       ];
 

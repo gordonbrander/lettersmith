@@ -12,7 +12,7 @@ Deno.test("parseFrontmatter throws error for frontmatter that does not have an r
 });
 
 Deno.test("parseFrontmatter throws error for frontmatter that does not have an record at the top level (2)", () => {
-  const content = "---\n[1, 2, 3]---\nHello world";
+  const content = "---\n1---\nHello world";
   assertThrows(() => parseFrontmatter(content));
 });
 
