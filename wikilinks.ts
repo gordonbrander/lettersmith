@@ -84,7 +84,7 @@ export const upliftWikilinksMetaDocs = (
 export const pathToWikilinkSlug = (path: string): string => toSlug(stem(path));
 
 /** A link from head to to tail */
-export type Edge = {
+type Edge = {
   head: Stub.Stub;
   tail: Stub.Stub;
 };
