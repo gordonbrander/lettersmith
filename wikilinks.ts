@@ -1,5 +1,6 @@
 import { toSlug } from "./utils/slug.ts";
 import { type AwaitableIterable, map, mapAsync } from "@gordonb/generator";
+import { groupsAsync, indexByAsync } from "./utils/generator-extra.ts";
 import { create as createDoc, type Doc } from "./doc.ts";
 import { stem } from "./utils/path.ts";
 import * as Stub from "./stub.ts";
@@ -58,44 +59,75 @@ export const findWikilinks = (content: string): Wikilink[] =>
     ),
   );
 
+/** Find wikilinks in content and set them on the `meta.wikilinks` property */
+export const upliftWikilinksMeta = (doc: Doc): Doc =>
+  createDoc({
+    ...doc,
+    meta: {
+      ...doc.meta,
+      wikilinks: findWikilinks(doc.content),
+    },
+  });
+
+/**
+ * Finds wikilinks in the content and assigns them to the `meta.wikilinks` property
+ * Returns an async generator of docs with the `meta.wikilinks` property set.
+ */
+export const upliftWikilinksMetaDocs = (
+  docs: AwaitableIterable<Doc>,
+): AsyncGenerator<Doc> => mapAsync(docs, upliftWikilinksMeta);
+
 /**
  * Generate a wikilink slug for a path.
  * Sluggifies the basename of the path (without the extension).
  */
-export const toWikilinkSlug = (path: string): string => toSlug(stem(path));
+export const pathToWikilinkSlug = (path: string): string => toSlug(stem(path));
 
-/**
- * Compile an index of docs by wikilink slug.
- * This can be useful for generating links when expanding wikilinks with `renderWikilinks`.
- */
-export const indexByWikilinkSlug = async (
-  docs: AwaitableIterable<Doc>,
-): Promise<Map<string, Stub.Stub>> => {
-  const index = new Map<string, Stub.Stub>();
-  for await (const doc of docs) {
-    const slug = toWikilinkSlug(doc.id);
-    index.set(slug, Stub.fromDoc(doc));
-  }
-  return index;
+/** A link from head to to tail */
+export type Edge = {
+  head: Stub.Stub;
+  tail: Stub.Stub;
 };
 
-/**
- * Compile an index that maps wikilink slugs to backlinks.
- */
-export const indexBacklinks = async (
-  docs: AwaitableIterable<Doc>,
-): Promise<Map<string, Stub.Stub[]>> => {
-  const index = new Map<string, Stub.Stub[]>();
-  for await (const doc of docs) {
-    const wikilinks = findWikilinks(doc.content);
-    for (const wikilink of wikilinks) {
-      const backlinks = index.get(wikilink.slug);
-      if (backlinks) {
-        backlinks.push(Stub.fromDoc(doc));
-      } else {
-        index.set(wikilink.slug, [Stub.fromDoc(doc)]);
+/** Generate edges from a document's wikilinks to that document */
+function* _expandEdges(
+  index: Map<string, Stub.Stub>,
+): Generator<Edge> {
+  for (const tail of index.values()) {
+    const metaWikilinks = (tail.meta.wikilinks as Wikilink[] | undefined) ?? [];
+    for (const wikilink of metaWikilinks) {
+      const head = index.get(wikilink.slug);
+      if (head) {
+        yield { head: head, tail };
       }
     }
   }
-  return index;
+}
+
+/**
+ * Generate wikilink indexes from a collection of documents
+ * Consumes docs iterable, returning an object containing the slug index, link
+ * index, and backlink index.
+ * - `slug`: A map of wikilink slug to stubs
+ * - `links`: A map of stub id to array of stubs that link to it
+ * - `backlinks`: A map of stub id to array of stubs that link from it
+ * Stubs also have an additional meta field `meta.wikilinks` containing an array
+ * of wikilinks that the stub links to.
+ */
+export const generateWikilinkIndexes = async (
+  docs: AwaitableIterable<Doc>,
+) => {
+  const docsWithUpliftedWikilinks = upliftWikilinksMetaDocs(docs);
+  const stubs = mapAsync(docsWithUpliftedWikilinks, Stub.fromDoc);
+  const slug = await indexByAsync(
+    mapAsync(stubs, (stub) => [pathToWikilinkSlug(stub.id), stub]),
+  );
+  const edges = Array.from(_expandEdges(slug));
+  const links = await groupsAsync(
+    mapAsync(edges, (edge) => [edge.tail.id, edge.head]),
+  );
+  const backlinks = await groupsAsync(
+    mapAsync(edges, (edge) => [edge.head.id, edge.tail]),
+  );
+  return { slug, links, backlinks };
 };

@@ -24,6 +24,6 @@ export const fromDoc = (doc: Doc) => ({
   modified: doc.modified,
   title: doc.title,
   summary: doc.summary,
-  tags: doc.tags,
-  meta: doc.meta,
+  tags: structuredClone(doc.tags),
+  meta: structuredClone(doc.meta),
 });
