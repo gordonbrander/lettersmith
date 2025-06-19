@@ -12,10 +12,10 @@ Deno.test("groupsAsync - groups items by key", async () => {
 
   const result = await groupsAsync(entries);
 
-  assertEquals(result.get("a"), [1, 3]);
-  assertEquals(result.get("b"), [2, 5]);
-  assertEquals(result.get("c"), [4]);
-  assertEquals(result.size, 3);
+  assertEquals(result["a"], [1, 3]);
+  assertEquals(result["b"], [2, 5]);
+  assertEquals(result["c"], [4]);
+  assertEquals(Object.keys(result).length, 3);
 });
 
 Deno.test("groupsAsync - handles empty iterable", async () => {
@@ -23,7 +23,7 @@ Deno.test("groupsAsync - handles empty iterable", async () => {
 
   const result = await groupsAsync(entries);
 
-  assertEquals(result.size, 0);
+  assertEquals(Object.keys(result).length, 0);
 });
 
 Deno.test("groupsAsync - handles single item", async () => {
@@ -31,8 +31,8 @@ Deno.test("groupsAsync - handles single item", async () => {
 
   const result = await groupsAsync(entries);
 
-  assertEquals(result.get("key"), ["value"]);
-  assertEquals(result.size, 1);
+  assertEquals(result["key"], ["value"]);
+  assertEquals(Object.keys(result).length, 1);
 });
 
 Deno.test("indexByAsync - creates index from entries", async () => {
@@ -44,10 +44,10 @@ Deno.test("indexByAsync - creates index from entries", async () => {
 
   const result = await indexByAsync(entries);
 
-  assertEquals(result.get("a"), 1);
-  assertEquals(result.get("b"), 2);
-  assertEquals(result.get("c"), 3);
-  assertEquals(result.size, 3);
+  assertEquals(result["a"], 1);
+  assertEquals(result["b"], 2);
+  assertEquals(result["c"], 3);
+  assertEquals(Object.keys(result).length, 3);
 });
 
 Deno.test("indexByAsync - overwrites duplicate keys", async () => {
@@ -59,9 +59,9 @@ Deno.test("indexByAsync - overwrites duplicate keys", async () => {
 
   const result = await indexByAsync(entries);
 
-  assertEquals(result.get("a"), 3);
-  assertEquals(result.get("b"), 2);
-  assertEquals(result.size, 2);
+  assertEquals(result["a"], 3);
+  assertEquals(result["b"], 2);
+  assertEquals(Object.keys(result).length, 2);
 });
 
 Deno.test("indexByAsync - handles empty iterable", async () => {
@@ -69,5 +69,5 @@ Deno.test("indexByAsync - handles empty iterable", async () => {
 
   const result = await indexByAsync(entries);
 
-  assertEquals(result.size, 0);
+  assertEquals(Object.keys(result).length, 0);
 });

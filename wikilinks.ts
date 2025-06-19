@@ -91,12 +91,12 @@ type Edge = {
 
 /** Generate edges from a document's wikilinks to that document */
 function* _expandEdges(
-  index: Map<string, Stub.Stub>,
+  index: Record<string, Stub.Stub>,
 ): Generator<Edge> {
-  for (const tail of index.values()) {
+  for (const tail of Object.values(index)) {
     const metaWikilinks = (tail.meta.wikilinks as Wikilink[] | undefined) ?? [];
     for (const wikilink of metaWikilinks) {
-      const head = index.get(wikilink.slug);
+      const head = index[wikilink.slug];
       if (head) {
         yield { head: head, tail };
       }
@@ -105,9 +105,9 @@ function* _expandEdges(
 }
 
 export type WikilinkIndexes = {
-  slug: Map<string, Stub.Stub>;
-  links: Map<string, Stub.Stub[]>;
-  backlinks: Map<string, Stub.Stub[]>;
+  slug: Record<string, Stub.Stub>;
+  links: Record<string, Stub.Stub[]>;
+  backlinks: Record<string, Stub.Stub[]>;
 };
 
 /**

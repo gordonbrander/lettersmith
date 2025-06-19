@@ -153,20 +153,20 @@ Deno.test("generateWikilinkIndexes generates correct indexes", async () => {
   const { slug, links, backlinks } = await generateWikilinkIndexes(docs);
 
   // Test slug index
-  assertEquals(slug.has("page-one"), true);
-  assertEquals(slug.has("page-two"), true);
-  assertEquals(slug.has("page-three"), true);
-  assertEquals(slug.get("page-one")?.id, "page-one.md");
+  assertEquals(Object.hasOwn(slug, "page-one"), true);
+  assertEquals(Object.hasOwn(slug, "page-two"), true);
+  assertEquals(Object.hasOwn(slug, "page-three"), true);
+  assertEquals(slug["page-one"]?.id, "page-one.md");
 
   // Test links index (documents that are linked TO)
-  assertEquals(links.has("page-two.md"), true);
-  assertEquals(links.has("page-three.md"), false);
-  assertEquals(links.has("page-one.md"), true);
-  assertEquals(links.get("page-two.md")?.length, 1);
+  assertEquals(Object.hasOwn(links, "page-two.md"), true);
+  assertEquals(Object.hasOwn(links, "page-three.md"), false);
+  assertEquals(Object.hasOwn(links, "page-one.md"), true);
+  assertEquals(links["page-two.md"]?.length, 1);
 
   // Test backlinks index (documents that link FROM)
-  assertEquals(backlinks.has("page-one.md"), true);
-  assertEquals(backlinks.has("page-two.md"), true);
-  assertEquals(backlinks.get("page-one.md")?.length, 1);
-  assertEquals(backlinks.get("page-two.md")?.length, 1);
+  assertEquals(Object.hasOwn(backlinks, "page-one.md"), true);
+  assertEquals(Object.hasOwn(backlinks, "page-two.md"), true);
+  assertEquals(backlinks["page-one.md"]?.length, 1);
+  assertEquals(backlinks["page-two.md"]?.length, 1);
 });
