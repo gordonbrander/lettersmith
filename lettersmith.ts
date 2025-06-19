@@ -25,6 +25,11 @@ export const args = (): LettersmithArgs =>
     },
   });
 
+/** An object containing configuration options passed into the build function */
+export type BuildConfig = {
+  output: string;
+};
+
 /**
  * Entrypoint for your lettersmith application.
  * Handles serving, and watching for file changes.
@@ -36,19 +41,23 @@ export const lettersmith = ({
   serve: shouldServe = false,
   clean: shouldClean = true,
 }: {
-  build: (output: string) => Promise<void>;
+  build: (config: BuildConfig) => Promise<void>;
   output?: string;
   watch?: boolean;
   serve?: boolean;
   clean?: boolean;
 }): AsyncCancel => {
+  const config: BuildConfig = {
+    output,
+  };
+
   // Wrap up build step
   const rebuild = async () => {
     const start = performance.now();
     if (shouldClean) {
       await clean(output);
     }
-    await build(output);
+    await build(config);
     const end = performance.now();
     console.log(`🔥 Built! ${end - start}ms 🔥`);
   };
