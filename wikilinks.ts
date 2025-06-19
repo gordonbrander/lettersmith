@@ -104,6 +104,12 @@ function* _expandEdges(
   }
 }
 
+export type WikilinkIndexes = {
+  slug: Map<string, Stub.Stub>;
+  links: Map<string, Stub.Stub[]>;
+  backlinks: Map<string, Stub.Stub[]>;
+};
+
 /**
  * Generate wikilink indexes from a collection of documents
  * Consumes docs iterable, returning an object containing the slug index, link
@@ -116,7 +122,7 @@ function* _expandEdges(
  */
 export const generateWikilinkIndexes = async (
   docs: AwaitableIterable<Doc>,
-) => {
+): Promise<WikilinkIndexes> => {
   const docsWithUpliftedWikilinks = upliftWikilinksMetaDocs(docs);
   const stubs = mapAsync(docsWithUpliftedWikilinks, Stub.fromDoc);
   const slug = await indexByAsync(

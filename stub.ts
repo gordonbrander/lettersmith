@@ -16,7 +16,7 @@ export type Stub = {
   meta: Meta;
 };
 
-export const fromDoc = (doc: Doc) => ({
+export const fromDoc = (doc: Doc): Stub => ({
   id: doc.id,
   outputPath: doc.outputPath,
   templatePath: doc.templatePath,
